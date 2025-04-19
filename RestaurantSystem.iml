@@ -10,5 +10,9 @@
     <orderEntry type="library" name="mssql-jdbc-12.10.0.jre11" level="project" />
     <orderEntry type="library" name="flatlaf-3.6" level="project" />
     <orderEntry type="library" name="miglayout-4.0" level="project" />
+    <orderEntry type="library" name="flatlaf-extras-3.6" level="project" />
+    <orderEntry type="library" name="swing-datetime-picker-2.0.0" level="project" />
+    <orderEntry type="library" name="jsvg-1.7.2" level="project" />
+    <orderEntry type="library" name="swing-toast-notifications-1.0.4" level="project" />
   </component>
 </module>

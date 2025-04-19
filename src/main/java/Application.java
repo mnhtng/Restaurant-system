@@ -1,12 +1,18 @@
 package main.java;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import main.java.util.FormsManager;
 import main.java.util.JDBCConnection;
+import main.java.view.auth.Login;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author MnhTng
@@ -21,14 +27,13 @@ public class Application extends JFrame {
         this.setSize(1200, 700);
         this.setLocationRelativeTo(null);
 
-        JPanel registerPanel = new JPanel(new MigLayout("fill, insets 20", "[center]", "[center]"));
-        String panelStyle = "arc: 20; [light]background:darken(@background,2%); [dark]background:lighten(@background,3%)";
+        Notifications.getInstance().setJFrame(this);
 
-        registerPanel.putClientProperty(FlatClientProperties.STYLE, panelStyle);
-
-        this.add(registerPanel);
+        this.add(new Login());
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
+
+        FormsManager.getInstance().initApplication(this);
     }
 
     public static void main(String[] args) {
@@ -36,7 +41,9 @@ public class Application extends JFrame {
         JDBCConnection dbConnection = JDBCConnection.getInstance();
 
         // Set the look and feel to FlatLaf
+        FlatLaf.registerCustomDefaultsSource("main.resources.styles");
         FlatMacLightLaf.setup();
+
         // Show the application window (main frame)
         new Application();
     }
