@@ -13,25 +13,25 @@ import java.awt.*;
  * @Copyright tùng
  */
 
-public class FormsManager {
+public class UiManager {
     private Application application;
-    private static FormsManager instance;
+    private static UiManager instance;
 
-    public static FormsManager getInstance() {
+    public static UiManager getInstance() {
         if (instance == null) {
-            instance = new FormsManager();
+            instance = new UiManager();
         }
         return instance;
     }
 
-    private FormsManager() {
+    private UiManager() {
     }
 
     public void initApplication(Application application) {
         this.application = application;
     }
 
-    public void showForm(JComponent form) {
+    public void showView(Container form) {
         EventQueue.invokeLater(() -> {
             FlatAnimatedLafChange.showSnapshot();
             application.setContentPane(form);
