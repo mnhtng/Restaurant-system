@@ -35,6 +35,10 @@ public class JDBCConnection {
         return BillPughSingleton.INSTANCE;
     }
 
+    public Connection getConnection() {
+        return conn;
+    }
+
     public static void closeConnection() {
         try {
             if (getInstance().conn != null) {
