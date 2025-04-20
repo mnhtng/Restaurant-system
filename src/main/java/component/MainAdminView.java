@@ -6,7 +6,6 @@ import com.formdev.flatlaf.util.UIScale;
 import main.java.component.menu.Menu;
 import main.java.component.menu.MenuAction;
 import main.java.controller.AuthController;
-import main.java.middleware.AuthMiddleware;
 import main.java.util.UiManager;
 import main.java.view.admin.Dashboard;
 
