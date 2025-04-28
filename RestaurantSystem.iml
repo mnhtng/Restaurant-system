@@ -14,5 +14,10 @@
     <orderEntry type="library" name="swing-datetime-picker-2.0.0" level="project" />
     <orderEntry type="library" name="jsvg-1.7.2" level="project" />
     <orderEntry type="library" name="swing-toast-notifications-1.0.4" level="project" />
+    <orderEntry type="library" name="modal-dialog-2.4.0" level="project" />
+    <orderEntry type="library" name="swing-glasspane-popup-1.5.0" level="project" />
+    <orderEntry type="library" name="picture-box-1.2" level="project" />
+    <orderEntry type="library" name="jna-5.5.0" level="project" />
+    <orderEntry type="library" name="swing-jnafilechooser" level="project" />
   </component>
 </module>

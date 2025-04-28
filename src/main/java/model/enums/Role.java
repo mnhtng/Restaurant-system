@@ -24,9 +24,4 @@ public enum Role {
         }
         return null;
     }
-
-    @Override
-    public String toString() {
-        return "Present Role: " + this.name();
-    }
 }

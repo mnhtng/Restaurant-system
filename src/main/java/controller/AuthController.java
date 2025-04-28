@@ -3,8 +3,9 @@ package main.java.controller;
 import main.java.dao.MemberDAO;
 import main.java.model.Member;
 import main.java.util.Session;
-import main.java.util.UiManager;
-import main.java.view.auth.Login;
+import main.java.view.auth.AuthView;
+
+import java.util.List;
 
 /**
  * @author MnhTng
@@ -27,13 +28,16 @@ public class AuthController {
     }
 
     public static boolean signup(Member newUser) {
-        for (Member member : MemberDAO.getAllMembers()) {
-            if (member.getEmail().equals(newUser.getEmail())) {
-                return false;
+        List<Member> allMembers = MemberDAO.getAllMembers();
+        if (allMembers != null) {
+            for (Member member : allMembers) {
+                if (member.getEmail().equals(newUser.getEmail())) {
+                    return false;
+                }
             }
         }
 
-        if (!MemberDAO.addMember(newUser)) {
+        if (MemberDAO.addMember(newUser) == 0) {
             return false;
         }
 
@@ -42,6 +46,6 @@ public class AuthController {
 
     public static void logout() {
         Session.getInstance().clear();
-        UiManager.getInstance().showView(new Login());
+        new AuthView();
     }
 }

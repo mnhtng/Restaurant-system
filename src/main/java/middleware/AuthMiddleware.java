@@ -2,9 +2,9 @@ package main.java.middleware;
 
 import main.java.dao.MemberDAO;
 import main.java.model.Member;
-import main.java.util.AlertUtil;
 import main.java.util.Session;
-import main.java.view.auth.Login;
+import main.java.view.auth.AuthView;
+import main.java.view.auth.LoginView;
 
 /**
  * @author MnhTng
@@ -18,7 +18,7 @@ public class AuthMiddleware implements Middleware{
     public void handle() {
         if (!isValidSession()) {
             Session.getInstance().clear();
-            AlertUtil.alertAndRedirect("error", "User not exits or session expired", new Login());
+            new AuthView();
         }
     }
 

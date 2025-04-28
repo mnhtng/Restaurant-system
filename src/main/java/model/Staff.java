@@ -1,10 +1,6 @@
 package main.java.model;
 
-import main.java.model.enums.Gender;
-import main.java.model.enums.Role;
-
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * @author MnhTng
@@ -16,12 +12,15 @@ import java.util.List;
 public class Staff {
     private int id;
     private float salary;
+    private LocalDateTime deleteAt;
 
-    public Staff() {}
+    public Staff() {
+    }
 
-    public Staff(Member member, float salary) {
-        this.id = member.getId();
+    public Staff(int id, float salary, LocalDateTime deleteAt) {
+        this.id = id;
         this.salary = salary;
+        this.deleteAt = deleteAt;
     }
 
     public int getId() {
@@ -38,5 +37,13 @@ public class Staff {
 
     public void setSalary(float salary) {
         this.salary = salary;
+    }
+
+    public LocalDateTime getDeleteAt() {
+        return deleteAt;
+    }
+
+    public void setDeleteAt(LocalDateTime deleteAt) {
+        this.deleteAt = deleteAt;
     }
 }

@@ -1,13 +1,11 @@
 package main.java;
 
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import main.java.util.UiManager;
+import main.java.model.enums.Role;
 import main.java.util.JDBCConnection;
-import main.java.view.auth.Login;
-import raven.toast.Notifications;
-
-import javax.swing.*;
+import main.java.util.Session;
+import main.java.view.admin.MainAdminView;
+import main.java.view.auth.AuthView;
+import main.java.view.member.MainMemberView;
 
 /**
  * @author MnhTng
@@ -16,31 +14,27 @@ import javax.swing.*;
  * @Copyright tùng
  */
 
-public class Application extends JFrame {
+public class Application {
     public Application() {
-        this.setTitle("Hang Rong");
-        this.setSize(1200, 700);
-        this.setLocationRelativeTo(null);
+        if (Session.getInstance().isAuthenticated()) {
+            Role role = Session.getInstance().getCurrentUser().getRole();
 
-        Notifications.getInstance().setJFrame(this);
-
-        this.add(new Login());
-
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setVisible(true);
-
-        UiManager.getInstance().initApplication(this);
+            switch (role) {
+                case MEMBER:
+                    new MainMemberView();
+                    break;
+                default:
+                    new MainAdminView();
+                    break;
+            }
+        } else {
+            new AuthView();
+        }
     }
 
     public static void main(String[] args) {
-        // Connect to the database
         JDBCConnection dbConnection = JDBCConnection.getInstance();
 
-        // Set the look and feel to FlatLaf
-        FlatLaf.registerCustomDefaultsSource("main.resources.styles");
-        FlatMacLightLaf.setup();
-
-        // Show the application window (main frame)
         new Application();
     }
 }

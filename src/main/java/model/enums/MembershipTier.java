@@ -38,9 +38,4 @@ public enum MembershipTier {
         }
         return null;
     }
-
-    @Override
-    public String toString() {
-        return "Present Membership Tier: " + this.name();
-    }
 }
