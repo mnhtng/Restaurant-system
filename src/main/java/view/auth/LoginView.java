@@ -1,5 +1,6 @@
 package main.java.view.auth;
 
+import main.java.Application;
 import main.java.controller.AuthController;
 import main.java.view.admin.MainAdminView;
 
@@ -42,7 +43,7 @@ public class LoginView {
     private void onLogin(String email, String password) {
         if (AuthController.login(email, password)) {
             System.out.println("Đăng nhập thành công!");
-            new MainAdminView();
+            new Application();
         } else {
             System.out.println("Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.");
         }

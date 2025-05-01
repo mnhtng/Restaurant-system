@@ -15,23 +15,21 @@ import java.util.List;
  */
 
 public class MemberAdminController {
+    public static List<Member> getAllUsers() {
+        return MemberDAO.getAllUsers();
+    }
+
     public static List<Member> getAllMembers() {
         return MemberDAO.getAllMembers();
     }
 
-    public static boolean addMember(Member member, String[] selectedPermission) {
+    public static boolean addMember(Member member) {
         Member checkExistAccount = MemberDAO.findMember(member.getEmail(), member.getPassword());
         if (checkExistAccount != null) {
             return false;
         }
 
-        member.setId(MemberDAO.addMember(member));
-        if (member.getId() == 0) {
-            return false;
-        }
-
-        List<Permission> allPermissions = PermissionDAO.getAllPermissions();
-        if (!PermissionDAO.addSelectedPermission(member, selectedPermission, allPermissions)) {
+        if (MemberDAO.addMember(member) == 0) {
             return false;
         }
 
@@ -55,15 +53,15 @@ public class MemberAdminController {
         return MemberDAO.deleteMember(memberId);
     }
 
-    public static List<Permission> getAllPermissions() {
-        return PermissionDAO.getAllPermissions();
-    }
-
-    public static List<Permission> getPermissionsById(int id) {
-        return PermissionDAO.findPermissionById(id);
-    }
-
     public static List<Member> searchMember(String query) {
         return MemberDAO.search(query);
+    }
+
+    public static List<Member> getMemberCardList() {
+        return MemberDAO.getMemberCardList();
+    }
+
+    public static List<Member> searchMemberCard(String query) {
+        return MemberDAO.searchMemberCard(query);
     }
 }

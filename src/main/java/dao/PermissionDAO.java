@@ -44,7 +44,7 @@ public class PermissionDAO {
     }
 
     public static List<Permission> findPermissionById(int id) {
-        String sql = "SELECT * FROM member_permission AS mp JOIN permission AS p ON mp.permission_id = p.id JOIN member AS m ON m.id = mp.member_id WHERE mp.member_id = ? AND m.delete_at IS NULL";
+        String sql = "SELECT * FROM permission AS p JOIN member_permission AS mp ON mp.permission_id = p.id JOIN member AS m ON m.id = mp.member_id WHERE mp.member_id = ? AND m.delete_at IS NULL";
         Connection connection = JDBCConnection.getInstance().getConnection();
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

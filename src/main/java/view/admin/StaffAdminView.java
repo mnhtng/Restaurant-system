@@ -2,34 +2,37 @@ package main.java.view.admin;
 
 import main.java.component.DataTable;
 import main.java.controller.admin.MemberAdminController;
+import main.java.controller.admin.StaffAdminController;
 import main.java.controller.admin.PermissionAdminController;
 import main.java.model.Member;
 import main.java.model.Permission;
+import main.java.model.Staff;
 import main.java.model.enums.Gender;
 import main.java.model.enums.MembershipTier;
 import main.java.model.enums.Role;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
  * @author MnhTng
  * @Package main.java.view.admin
- * @date 4/24/2025 2:53 PM
+ * @date 4/28/2025 7:59 AM
  * @Copyright tùng
  */
 
-public class MemberAdminView {
+public class StaffAdminView {
     private boolean closeView = false;
 
-    public MemberAdminView() {
+    public StaffAdminView() {
         while (!closeView) {
             show();
         }
@@ -38,50 +41,49 @@ public class MemberAdminView {
     public void show() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("========== Quản lý thành viên ==========");
-        System.out.println("1. Thêm thành viên");
-        System.out.println("2. Cập nhật thành viên");
-        System.out.println("3. Xóa thành viên");
-        System.out.println("4. Hiển thị danh sách thành viên");
-        System.out.println("5. Tìm kiếm thành viên");
+        System.out.println("========== Quản lý nhân viên ==========");
+        System.out.println("1. Thêm nhân viên");
+        System.out.println("2. Cập nhật thông tin nhân viên");
+        System.out.println("3. Xóa nhân viên");
+        System.out.println("4. Hiển thị danh sách nhân viên");
+        System.out.println("5. Tìm kiếm nhân viên");
         System.out.println("6. Quay lại");
         System.out.print("Chọn chức năng: ");
 
         try {
             switch (sc.nextInt()) {
                 case 1:
-                    this.addMemberView();
+                    this.addStaffView();
                     break;
                 case 2:
-                    this.updateMemberView();
+                    this.updateStaffView();
                     break;
                 case 3:
-                    this.deleteMemberView();
+                    this.deleteStaffView();
                     break;
                 case 4:
-                    this.listMemberView();
+                    this.listStaffView();
                     break;
                 case 5:
-                    this.searchMemberView();
+                    this.searchStaffView();
                     break;
                 case 6:
-                    this.closeView = true;
+                    closeView = true;
                     new MainAdminView();
                     break;
                 default:
                     System.out.println("Chức năng không hợp lệ!");
                     break;
             }
-            sc.nextLine();
         } catch (InputMismatchException e) {
             System.out.println("Lỗi nhập liệu! Vui lòng nhập lại.");
         }
     }
 
-    public void addMemberView() {
+    public void addStaffView() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("========== Thêm thành viên ==========");
+        System.out.println("========== Thêm nhân viên ==========");
         System.out.print("Tên: ");
         String name = sc.nextLine();
         if (name.length() < 2) {
@@ -144,17 +146,83 @@ public class MemberAdminView {
             return;
         }
 
+        System.out.println("|-- 1. Quản lý");
+        System.out.println("|-- 2. Nhân viên kho");
+        System.out.println("|-- 3. Nhân viên phục vụ");
+        System.out.print("Vai trò: ");
+        Role role = null;
+        try {
+            switch (sc.nextInt()) {
+                case 1:
+                    role = Role.MANAGER;
+                    break;
+                case 2:
+                    role = Role.INVENTORY_CLERK;
+                    break;
+                case 3:
+                    role = Role.SERVICE_CLERK;
+                    break;
+                default:
+                    System.out.println("Vai trò không hợp lệ!");
+                    return;
+            }
+            sc.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("Lỗi nhập liệu! Vui lòng nhập lại.");
+            return;
+        }
+
+        List<Permission> permissions = PermissionAdminController.getAllPermissions();
+        this.loadPermissions(permissions);
+        String matchPermission = this.getMatchPermission(role, permissions);
+        System.out.println("Quyền hạn mặc định cho vai trò " + role.toString().toUpperCase() + " là: [" + matchPermission + "]");
+        System.out.println("Bạn có muốn chỉnh sửa không?");
+        System.out.println("|-- 1. Có");
+        System.out.println("|-- 2. Không");
+        System.out.print("Chọn 1 lựa chọn: ");
+        String permission = matchPermission;
+        try {
+            switch (sc.nextInt()) {
+                case 1:
+                    sc.nextLine();
+                    System.out.print("Quyền hạn mới: ");
+                    permission = sc.nextLine();
+                    if (permission.trim().contains(" ") || permission.isEmpty() || (!permission.isEmpty() && !permission.matches("\\d+(,\\d+)*"))) {
+                        System.out.println("Quyền hạn không hợp lệ!");
+                        return;
+                    }
+                    break;
+                case 2:
+                    sc.nextLine();
+                    break;
+                default:
+                    System.out.println("Chức năng không hợp lệ!");
+                    return;
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Lỗi nhập liệu! Vui lòng nhập lại.");
+            return;
+        }
+
+        System.out.print("Lương: ");
+        float salary = sc.nextFloat();
+        sc.nextLine();
+        if (salary < 0) {
+            System.out.println("Lương không hợp lệ!");
+            return;
+        }
+
         System.out.println("Bạn có muốn tạo thẻ thành viên không?");
         System.out.println("|-- 1. Có");
         System.out.println("|-- 2. Không");
         System.out.print("Chọn 1 lựa chọn: ");
-        MembershipTier membershipTier = null;
+        MembershipTier staffshipTier = null;
         float loyaltyPoint = 0;
         LocalDateTime createCardAt = null;
         try {
             switch (sc.nextInt()) {
                 case 1:
-                    membershipTier = MembershipTier.BRONZE;
+                    staffshipTier = MembershipTier.BRONZE;
                     createCardAt = LocalDateTime.now();
                     break;
                 case 2:
@@ -172,7 +240,9 @@ public class MemberAdminView {
         if (name.isEmpty() || phone.isEmpty() || birthday.isEmpty() || email.isEmpty() || password.isEmpty()) {
             System.out.println("Vui lòng nhập đầy đủ thông tin!");
         } else {
+            Staff staff = new Staff();
             Member member = new Member();
+
             member.setName(name.trim());
             member.setEmail(email);
             member.setPassword(password);
@@ -180,13 +250,18 @@ public class MemberAdminView {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             member.setBirthday(LocalDate.parse(birthday.trim(), formatter));
             member.setGender(gender);
-            member.setRole(Role.MEMBER);
-            member.setMembershipTier(membershipTier);
+            member.setRole(role);
+            member.setMembershipTier(staffshipTier);
             member.setLoyaltyPoint(loyaltyPoint);
             member.setCreateCardAt(createCardAt);
             member.setDeleteAt(null);
 
-            this.onAddMember(member);
+            staff.setSalary(salary);
+            staff.setMember(member);
+
+            String[] permissionParts = permission.split(",");
+
+            this.onAddStaff(staff, permissionParts);
         }
     }
 
@@ -235,29 +310,29 @@ public class MemberAdminView {
         return permissionList.toString();
     }
 
-    private void onAddMember(Member member) {
-        if (MemberAdminController.addMember(member)) {
-            System.out.println("Thêm thành viên thành công!");
+    private void onAddStaff(Staff staff, String[] permissionParts) {
+        if (StaffAdminController.addStaff(staff, permissionParts)) {
+            System.out.println("Thêm nhân viên thành công!");
         } else {
-            System.out.println("Xảy ra lỗi khi thêm thành viên! Có thể là do tài khoản đã tồn tại hoặc lỗi kết nối cơ sở dữ liệu.");
+            System.out.println("Thêm nhân viên thất bại!");
         }
     }
 
-    public void updateMemberView() {
+    public void updateStaffView() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("========== Cập nhật thành viên ==========");
-        System.out.print("Nhập ID thành viên cần cập nhật: ");
-        int memberId = sc.nextInt();
+        System.out.println("========== Cập nhật nhân viên ==========");
+        System.out.print("Nhập ID nhân viên cần cập nhật: ");
+        int staffId = sc.nextInt();
         sc.nextLine();
-        Member updateMember = this.checkExistMember(memberId);
-        List<Permission> updatePermissions = this.checkExistPermission(memberId);
-        if (updateMember == null) {
-            System.out.println("Thành viên không tồn tại!");
+        Staff updateStaff = this.checkExistStaff(staffId);
+        List<Permission> updatePermissions = this.checkExistPermission(staffId);
+        if (updateStaff == null) {
+            System.out.println("Nhân viên không tồn tại!");
             return;
         }
 
-        System.out.println("Tên hiện tại: " + updateMember.getName());
+        System.out.println("Tên hiện tại: " + updateStaff.getMember().getName());
         System.out.print("Nhập tên mới (Không muốn thay đổi, nhấn Enter): ");
         String name = sc.nextLine();
         if (!name.isEmpty() && name.length() < 2) {
@@ -265,14 +340,14 @@ public class MemberAdminView {
             return;
         }
 
-        System.out.println("Email hiện tại: " + updateMember.getEmail());
+        System.out.println("Email hiện tại: " + updateStaff.getMember().getEmail());
         System.out.print("Nhập email mới (Không muốn thay đổi, nhấn Enter): ");
         String email = sc.nextLine();
         if (!email.isEmpty() && !email.matches("^[a-zA-Z0-9]{3,}@[a-z.]+\\.[a-z]{2,}$")) {
             System.out.println("Email không hợp lệ!");
         }
 
-        System.out.println("Mật khẩu hiện tại: " + updateMember.getPassword());
+        System.out.println("Mật khẩu hiện tại: " + updateStaff.getMember().getPassword());
         System.out.print("Nhập mật khẩu mới (Không muốn thay đổi, nhấn Enter): ");
         String password = sc.nextLine();
         if (!password.isEmpty() && password.contains(" ")) {
@@ -280,7 +355,7 @@ public class MemberAdminView {
             return;
         }
 
-        System.out.println("Số điện thoại hiện tại: " + updateMember.getPhone());
+        System.out.println("Số điện thoại hiện tại: " + updateStaff.getMember().getPhone());
         System.out.print("Nhập số điện thoại mới (Không muốn thay đổi, nhấn Enter): ");
         String phone = sc.nextLine();
         if (!phone.isEmpty() && !phone.matches("0\\d{9,14}")) {
@@ -288,7 +363,7 @@ public class MemberAdminView {
             return;
         }
 
-        System.out.println("Ngày sinh hiện tại: " + updateMember.getBirthday().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        System.out.println("Ngày sinh hiện tại: " + updateStaff.getMember().getBirthday().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         System.out.print("Nhập ngày sinh mới (Không muốn thay đổi, nhấn Enter): ");
         String birthday = sc.nextLine();
         String[] parts = birthday.split("-");
@@ -303,7 +378,7 @@ public class MemberAdminView {
             }
         }
 
-        System.out.println("Giới tính hiện tại: " + (updateMember.getGender() == Gender.MALE ? "Nam" : "Nữ"));
+        System.out.println("Giới tính hiện tại: " + (updateStaff.getMember().getGender() == Gender.MALE ? "Nam" : "Nữ"));
         System.out.println("|-- 1. Nam");
         System.out.println("|-- 2. Nữ");
         System.out.print("Giới tính mới (Không muốn thay đổi, nhấn số bất kỳ ngoài khoảng): ");
@@ -325,11 +400,11 @@ public class MemberAdminView {
             return;
         }
 
-        System.out.println("Vai trò hiện tại: " + (updateMember.getRole() == Role.MANAGER ?
+        System.out.println("Vai trò hiện tại: " + (updateStaff.getMember().getRole() == Role.MANAGER ?
                 "Quản lý" :
-                updateMember.getRole() == Role.INVENTORY_CLERK ?
+                updateStaff.getMember().getRole() == Role.INVENTORY_CLERK ?
                         "Nhân viên kho" :
-                        updateMember.getRole() == Role.SERVICE_CLERK ?
+                        updateStaff.getMember().getRole() == Role.SERVICE_CLERK ?
                                 "Nhân viên phục vụ" :
                                 "Thành viên"));
         System.out.println("|-- 1. Thành viên");
@@ -362,7 +437,7 @@ public class MemberAdminView {
         }
 
         String permission = "";
-        if ((role != null && role != Role.MEMBER) || updateMember.getRole() != Role.MEMBER) {
+        if ((role != null && role != Role.MEMBER) || updateStaff.getMember().getRole() != Role.MEMBER) {
             List<Permission> permissions = PermissionAdminController.getAllPermissions();
             this.loadPermissions(permissions);
             System.out.println("Quyền hạn hiện tại: [" + updatePermissions
@@ -377,10 +452,19 @@ public class MemberAdminView {
             }
         }
 
+        System.out.println("Lương hiện tại: " + NumberFormat.getCurrencyInstance(new Locale("vi", "VN")).format(updateStaff.getSalary()));
+        System.out.print("Nhập lương mới (Không muốn thay đổi, nhấn -1): ");
+        float salary = sc.nextFloat();
+        sc.nextLine();
+        if (salary < 0 && salary != -1) {
+            System.out.println("Lương không hợp lệ!");
+            return;
+        }
+
         System.out.println("Thông tin thẻ thành viên hiện tại: ");
-        System.out.println("Hạng thành viên: " + (updateMember.getMembershipTier() == null ? "null" : updateMember.getMembershipTier().toString().toUpperCase()));
-        System.out.println("Điểm tích lũy hiện tại: " + new BigDecimal(updateMember.getLoyaltyPoint()).toPlainString());
-        System.out.println("Ngày tạo thẻ: " + (updateMember.getCreateCardAt() == null ? "null" : updateMember.getCreateCardAt().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))));
+        System.out.println("Hạng thành viên: " + (updateStaff.getMember().getMembershipTier() == null ? "null" : updateStaff.getMember().getMembershipTier().toString().toUpperCase()));
+        System.out.println("Điểm tích lũy hiện tại: " + new BigDecimal(updateStaff.getMember().getLoyaltyPoint()).toPlainString());
+        System.out.println("Ngày tạo thẻ: " + (updateStaff.getMember().getCreateCardAt() == null ? "null" : updateStaff.getMember().getCreateCardAt().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))));
         System.out.println("Bạn có muốn cập nhật thẻ thành viên không?");
         System.out.println("|-- 1. Có");
         System.out.println("|-- 2. Không");
@@ -423,7 +507,6 @@ public class MemberAdminView {
                         System.out.println("Lỗi nhập liệu! Vui lòng nhập lại.");
                         return;
                     }
-
                     System.out.println("Bạn có muốn cập nhật điểm tích lũy không?");
                     System.out.println("|-- 1. Có");
                     System.out.println("|-- 2. Không");
@@ -445,7 +528,6 @@ public class MemberAdminView {
                                 }
                                 break;
                             case 2:
-                                sc.nextLine();
                                 break;
                             default:
                                 System.out.println("Chức năng không hợp lệ!");
@@ -455,7 +537,6 @@ public class MemberAdminView {
                         System.out.println("Lỗi nhập liệu! Vui lòng nhập lại.");
                         return;
                     }
-
                     System.out.println("Bạn có muốn cập nhật ngày tạo thẻ không?");
                     System.out.println("|-- 1. Có");
                     System.out.println("|-- 2. Không");
@@ -490,19 +571,24 @@ public class MemberAdminView {
         }
 
         Member member = new Member();
-        member.setId(memberId);
-        member.setName(name.trim().isEmpty() ? updateMember.getName().trim() : name.trim());
-        member.setEmail(email.trim().isEmpty() ? updateMember.getEmail() : email.trim());
-        member.setPassword(password.trim().isEmpty() ? updateMember.getPassword() : password.trim());
-        member.setPhone(phone.trim().isEmpty() ? updateMember.getPhone().trim() : phone.trim());
+        member.setId(staffId);
+        member.setName(name.trim().isEmpty() ? updateStaff.getMember().getName().trim() : name.trim());
+        member.setEmail(email.trim().isEmpty() ? updateStaff.getMember().getEmail() : email.trim());
+        member.setPassword(password.trim().isEmpty() ? updateStaff.getMember().getPassword() : password.trim());
+        member.setPhone(phone.trim().isEmpty() ? updateStaff.getMember().getPhone().trim() : phone.trim());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        member.setBirthday(birthday.trim().isEmpty() ? updateMember.getBirthday() : LocalDate.parse(birthday.trim(), formatter));
-        member.setGender(gender == null ? updateMember.getGender() : gender);
-        member.setRole(role == null ? updateMember.getRole() : role);
-        member.setMembershipTier(membershipTier == null ? updateMember.getMembershipTier() : membershipTier);
-        member.setLoyaltyPoint(loyaltyPoint == -1 ? updateMember.getLoyaltyPoint() : loyaltyPoint);
-        member.setCreateCardAt(createCardAt == null ? updateMember.getCreateCardAt() : createCardAt);
+        member.setBirthday(birthday.trim().isEmpty() ? updateStaff.getMember().getBirthday() : LocalDate.parse(birthday.trim(), formatter));
+        member.setGender(gender == null ? updateStaff.getMember().getGender() : gender);
+        member.setRole(role == null ? updateStaff.getMember().getRole() : role);
+        member.setMembershipTier(membershipTier == null ? updateStaff.getMember().getMembershipTier() : membershipTier);
+        member.setLoyaltyPoint(loyaltyPoint == -1 ? updateStaff.getMember().getLoyaltyPoint() : loyaltyPoint);
+        member.setCreateCardAt(createCardAt == null ? updateStaff.getMember().getCreateCardAt() : createCardAt);
         member.setDeleteAt(null);
+
+        Staff staff = new Staff();
+        staff.setId(staffId);
+        staff.setSalary((salary == -1) ? updateStaff.getSalary() : salary);
+        staff.setMember(member);
 
         String[] permissionParts = permission.trim().isEmpty() ?
                 updatePermissions.stream()
@@ -510,50 +596,50 @@ public class MemberAdminView {
                         .toArray(String[]::new) :
                 permission.split(",");
 
-        this.onUpdateMember(member, permissionParts);
+        this.onUpdateStaff(staff, permissionParts);
     }
 
-    private Member checkExistMember(int memberId) {
-        return MemberAdminController.getAllMembers()
+    private Staff checkExistStaff(int staffId) {
+        return StaffAdminController.getAllStaffs()
                 .stream()
-                .filter(member -> member.getId() == memberId)
+                .filter(staff -> staff.getId() == staffId)
                 .findFirst()
                 .orElse(null);
     }
 
-    private List<Permission> checkExistPermission(int memberId) {
-        return PermissionAdminController.getPermissionsById(memberId);
+    private List<Permission> checkExistPermission(int staffId) {
+        return PermissionAdminController.getPermissionsById(staffId);
     }
 
-    private void onUpdateMember(Member member, String[] permissionParts) {
-        if (MemberAdminController.updateMember(member, permissionParts)) {
-            System.out.println("Cập nhật thành viên thành công!");
+    private void onUpdateStaff(Staff staff, String[] permissionParts) {
+        if (StaffAdminController.updateStaff(staff, permissionParts)) {
+            System.out.println("Cập nhật nhân viên thành công!");
         } else {
-            System.out.println("Xảy ra lỗi khi cập nhật thành viên!");
+            System.out.println("Cập nhật nhân viên thất bại!");
         }
     }
 
-    public void deleteMemberView() {
+    public void deleteStaffView() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("========== Xóa thành viên ==========");
-        System.out.print("Nhập ID thành viên cần xóa: ");
-        int memberId = sc.nextInt();
+        System.out.println("========== Xóa nhân viên ==========");
+        System.out.print("Nhập ID nhân viên cần xóa: ");
+        int staffId = sc.nextInt();
         sc.nextLine();
-        Member deleteMember = this.checkExistMember(memberId);
-        if (deleteMember == null) {
-            System.out.println("Thành viên không tồn tại!");
+        Staff deleteStaff = this.checkExistStaff(staffId);
+        if (deleteStaff == null) {
+            System.out.println("Nhân viên không tồn tại!");
             return;
         }
 
-        System.out.println("Bạn chắc chắn muốn xóa thành viên này chứ?");
+        System.out.println("Bạn có chắc chắn muốn xóa nhân viên này không?");
         System.out.println("|-- 1. Chắc chắn");
         System.out.println("|-- 2. Không");
         System.out.print("Chọn 1 lựa chọn: ");
         try {
             switch (sc.nextInt()) {
                 case 1:
-                    this.onDeleteMember(memberId);
+                    this.onDeleteStaff(staffId);
                     break;
                 case 2:
                     break;
@@ -567,36 +653,36 @@ public class MemberAdminView {
         }
     }
 
-    private void onDeleteMember(int memberId) {
-        if (MemberAdminController.deleteMember(memberId)) {
-            System.out.println("Xóa thành viên thành công!");
+    private void onDeleteStaff(int staffId) {
+        if (StaffAdminController.deleteStaff(staffId)) {
+            System.out.println("Xóa nhân viên thành công!");
         } else {
-            System.out.println("Xảy ra lỗi khi xóa thành viên!");
+            System.out.println("Xóa nhân viên thất bại!");
         }
     }
 
-    public void listMemberView() {
+    public void listStaffView() {
         System.out.println("========== Danh sách thành viên ==========");
 
-        List<Member> members = MemberAdminController.getAllMembers();
-        this.displayMemberList(members);
+        List<Staff> staffs = StaffAdminController.getAllStaffs();
+        this.displayStaffList(staffs);
     }
 
-    private void displayMemberList(List<Member> members) {
-        String[] headers = {"ID", "Tên", "Email", "Mật khẩu", "Số điện thoại", "Ngày sinh", "Giới tính", "Hạng thành viên", "Điểm tích lũy", "Ngày tạo thẻ", "Vai trò", "Quyền hạn"};
+    private void displayStaffList(List<Staff> staffs) {
+        String[] headers = {"ID", "Tên", "Email", "Mật khẩu", "Số điện thoại", "Ngày sinh", "Giới tính", "Lương", "Hạng thành viên", "Điểm tích lũy", "Ngày tạo thẻ", "Vai trò", "Quyền hạn"};
 
-        DataTable.printMemberTable(headers, members);
+        DataTable.printStaffTable(headers, staffs);
     }
 
-    public void searchMemberView() {
+    public void searchStaffView() {
         boolean isClose = false;
 
         while (!isClose) {
             Scanner sc = new Scanner(System.in);
 
-            System.out.println("========== Tìm kiếm thành viên ==========");
+            System.out.println("========== Tìm kiếm nhân viên ==========");
             System.out.println("0. Quay lại (Nhập '0' để quay lại)");
-            System.out.println("Phạm vi tìm kiếm: tên, email, số điện thoại, ngày sinh, giới tính");
+            System.out.println("Phạm vi tìm kiếm: tên, email, số điện thoại, ngày sinh, giới tính, lương, vai trò");
             System.out.print("Nhập từ khóa tìm kiếm: ");
             String query = sc.nextLine();
 
@@ -608,10 +694,10 @@ public class MemberAdminView {
             if (query.equals("\'0\'")) {
                 isClose = true;
             } else {
-                List<Member> matchMembers = MemberAdminController.searchMember(query);
+                List<Staff> matchStaffs = StaffAdminController.searchStaff(query);
 
-                String[] headers = {"ID", "Tên", "Email", "Mật khẩu", "Số điện thoại", "Ngày sinh", "Giới tính", "Hạng thành viên", "Điểm tích lũy", "Ngày tạo thẻ", "Vai trò", "Quyền hạn"};
-                DataTable.printMemberTable(headers, matchMembers);
+                String[] headers = {"ID", "Tên", "Email", "Mật khẩu", "Số điện thoại", "Ngày sinh", "Giới tính", "Lương", "Hạng thành viên", "Điểm tích lũy", "Ngày tạo thẻ", "Vai trò", "Quyền hạn"};
+                DataTable.printStaffTable(headers, matchStaffs);
             }
         }
     }

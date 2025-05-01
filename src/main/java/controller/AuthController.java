@@ -1,5 +1,6 @@
 package main.java.controller;
 
+import main.java.Application;
 import main.java.dao.MemberDAO;
 import main.java.model.Member;
 import main.java.util.Session;
@@ -28,7 +29,7 @@ public class AuthController {
     }
 
     public static boolean signup(Member newUser) {
-        List<Member> allMembers = MemberDAO.getAllMembers();
+        List<Member> allMembers = MemberDAO.getAllUsers();
         if (allMembers != null) {
             for (Member member : allMembers) {
                 if (member.getEmail().equals(newUser.getEmail())) {
@@ -46,6 +47,7 @@ public class AuthController {
 
     public static void logout() {
         Session.getInstance().clear();
-        new AuthView();
+        System.out.println("Đăng xuất thành công!");
+        new Application();
     }
 }

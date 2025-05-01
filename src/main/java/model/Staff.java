@@ -1,5 +1,10 @@
 package main.java.model;
 
+import main.java.model.enums.Gender;
+import main.java.model.enums.MembershipTier;
+import main.java.model.enums.Role;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -12,15 +17,21 @@ import java.time.LocalDateTime;
 public class Staff {
     private int id;
     private float salary;
-    private LocalDateTime deleteAt;
+
+    private Member member;
 
     public Staff() {
     }
 
-    public Staff(int id, float salary, LocalDateTime deleteAt) {
+    public Staff(int id, String name, String email, String password, String phone, LocalDate birthday, Gender gender, Role role, float salary, MembershipTier membershipTier, float loyaltyPoint, LocalDateTime createCardAt, LocalDateTime deleteAt) {
         this.id = id;
         this.salary = salary;
-        this.deleteAt = deleteAt;
+    }
+
+    public Staff(int id, float salary, Member member) {
+        this.id = id;
+        this.salary = salary;
+        this.member = member;
     }
 
     public int getId() {
@@ -39,11 +50,11 @@ public class Staff {
         this.salary = salary;
     }
 
-    public LocalDateTime getDeleteAt() {
-        return deleteAt;
+    public Member getMember() {
+        return member;
     }
 
-    public void setDeleteAt(LocalDateTime deleteAt) {
-        this.deleteAt = deleteAt;
+    public void setMember(Member member) {
+        this.member = member;
     }
 }

@@ -48,13 +48,13 @@ public class MainAdminView {
                     new MemberAdminView();
                     break;
                 case 2:
-                    // new StaffView();
+                    new StaffAdminView();
                     break;
                 case 3:
-                    // new MemberCardView();
+                    new MemberCardAdminView();
                     break;
                 case 4:
-                    // new SupplierView();
+                    new SupplierAdminView();
                     break;
                 case 5:
                     // new IngredientView();
@@ -82,7 +82,6 @@ public class MainAdminView {
                     break;
                 case 13:
                     AuthController.logout();
-                    System.out.println("Đăng xuất thành công!");
                     break;
                 default:
                     System.out.println("Chức năng không hợp lệ!");
