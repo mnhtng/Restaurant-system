@@ -452,19 +452,19 @@ public class OrderMemberView {
 
 
     public void displayListDishInMenu(List<Dish> dishes){
-        String[] headers = {"ID", "Tên món", "Loại", "Định lượng", "Giá (VND)", "Mô tả"};
+        String[] headers = {"ID", "Tên món ăn", "Danh mục", "Khẩu phần", "Trạng thái", "Giá", "Nguyên liệu", "Trạng thái hiển thị trên menu", "Mô tả"};
 
         DataTable.printDishTable(headers, dishes);
     }
 
     public void displayListComboInMenu(List<Combo> combos){
-        String[] headers = {"ID", "Tên combo", "Giá (VND)", "Mô tả"};
+        String[] headers = {"ID", "Tên combo", "Giá", "Món ăn trong combo", "Trạng thái hiển thị trên menu", "Mô tả"};
 
         DataTable.printComboTable(headers, combos);
     }
 
     public void displayListTableAvailable(List<Table> tables){
-        String[] headers = {"ID", "Số ghế"};
+        String[] headers = {"ID", "Số ghế", "Trạng thái"};
 
         DataTable.printTableTable(headers, tables);
     }
