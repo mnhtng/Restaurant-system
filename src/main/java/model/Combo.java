@@ -1,19 +1,15 @@
 package main.java.model;
 
-/**
- * @author MnhTng
- * @Package Models
- * @date 4/16/2025 6:01 PM
- * @Copyright tùng
- */
-
 public class Combo {
     private int id;
     private String name;
     private float price;
     private String description;
 
-    public Combo() {}
+    private Product product;
+
+    public Combo() {
+    }
 
     public Combo(int id, String name, float price, String description) {
         this.id = id;
@@ -52,5 +48,13 @@ public class Combo {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

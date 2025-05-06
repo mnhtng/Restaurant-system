@@ -2,13 +2,6 @@ package main.java.util;
 
 import main.java.model.Member;
 
-/**
- * @author MnhTng
- * @Package main.java.util
- * @date 4/19/2025 11:16 PM
- * @Copyright tùng
- */
-
 public class Session {
     private static Session instance;
     private Member currentUser;

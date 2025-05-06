@@ -12,13 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @author MnhTng
- * @Package main.java.dao
- * @date 4/25/2025 11:51 AM
- * @Copyright tùng
- */
-
 public class PermissionDAO {
     public static List<Permission> getAllPermissions() {
         String sql = "SELECT * FROM permission";

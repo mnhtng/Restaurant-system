@@ -1,38 +1,44 @@
 package main.java.model;
 
-import java.time.LocalDate;
+import main.java.model.enums.PaymentMethod;
+import main.java.model.enums.PaymentStatus;
 
-/**
- * @author MnhTng
- * @Package Models
- * @date 4/16/2025 6:00 PM
- * @Copyright tùng
- */
+import java.time.LocalDateTime;
 
 public class Order {
-    private int id;
+    private String id;
     private int customerId;
     private int serviceClerkId;
     private int tableId;
-    private LocalDate orderTime;
+    private LocalDateTime orderTime;
+    private LocalDateTime expectedArrivalTime;
+    private PaymentMethod paymentMethod;
+    private float totalAmount;
+    private PaymentStatus status;
+    private LocalDateTime paidAt;
     private String note;
 
     public Order() {}
 
-    public Order(int id, int customerId, int serviceClerkId, int tableId, LocalDate orderTime, String note) {
+    public Order(String id, int customerId, int serviceClerkId, int tableId, LocalDateTime orderTime, LocalDateTime expectedArrivalTime, PaymentMethod paymentMethod, float totalAmount, PaymentStatus status,LocalDateTime paidAt, String note) {
         this.id = id;
         this.customerId = customerId;
         this.serviceClerkId = serviceClerkId;
         this.tableId = tableId;
         this.orderTime = orderTime;
+        this.expectedArrivalTime = expectedArrivalTime;
+        this.paymentMethod = paymentMethod;
+        this.totalAmount = totalAmount;
+        this.status = status;
+        this.paidAt = paidAt;
         this.note = note;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -60,12 +66,52 @@ public class Order {
         this.tableId = tableId;
     }
 
-    public LocalDate getOrderTime() {
+    public LocalDateTime getOrderTime() {
         return orderTime;
     }
 
-    public void setOrderTime(LocalDate orderTime) {
+    public void setOrderTime(LocalDateTime orderTime) {
         this.orderTime = orderTime;
+    }
+
+    public LocalDateTime getExpectedArrivalTime() {
+        return expectedArrivalTime;
+    }
+
+    public void setExpectedArrivalTime(LocalDateTime expectedArrivalTime) {
+        this.expectedArrivalTime = expectedArrivalTime;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public float getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(float totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public void setStatus(PaymentStatus status){
+        this.status = status;
+    }
+
+    public PaymentStatus getStatus(){
+        return status;
+    }
+
+    public LocalDateTime getPaidAt() {
+        return paidAt;
+    }
+
+    public void setPaidAt(LocalDateTime paidAt) {
+        this.paidAt = paidAt;
     }
 
     public String getNote() {

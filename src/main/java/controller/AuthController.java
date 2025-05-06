@@ -4,16 +4,8 @@ import main.java.Application;
 import main.java.dao.MemberDAO;
 import main.java.model.Member;
 import main.java.util.Session;
-import main.java.view.auth.AuthView;
 
 import java.util.List;
-
-/**
- * @author MnhTng
- * @Package main.java.controller
- * @date 4/19/2025 11:06 PM
- * @Copyright tùng
- */
 
 public class AuthController {
     public static boolean login(String email, String password) {

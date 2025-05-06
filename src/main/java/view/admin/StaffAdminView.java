@@ -1,7 +1,7 @@
 package main.java.view.admin;
 
+import main.java.Application;
 import main.java.component.DataTable;
-import main.java.controller.admin.MemberAdminController;
 import main.java.controller.admin.StaffAdminController;
 import main.java.controller.admin.PermissionAdminController;
 import main.java.model.Member;
@@ -10,6 +10,7 @@ import main.java.model.Staff;
 import main.java.model.enums.Gender;
 import main.java.model.enums.MembershipTier;
 import main.java.model.enums.Role;
+import main.java.util.Session;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -22,23 +23,18 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-/**
- * @author MnhTng
- * @Package main.java.view.admin
- * @date 4/28/2025 7:59 AM
- * @Copyright tùng
- */
-
 public class StaffAdminView {
     private boolean closeView = false;
 
     public StaffAdminView() {
         while (!closeView) {
-            show();
+            this.show();
         }
     }
 
     public void show() {
+        List<Permission> permissions = PermissionAdminController.getPermissionsById(Session.getInstance().getCurrentUser().getId());
+
         Scanner sc = new Scanner(System.in);
 
         System.out.println("========== Quản lý nhân viên ==========");
@@ -53,23 +49,43 @@ public class StaffAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.create"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.addStaffView();
                     break;
                 case 2:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.update"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.updateStaffView();
                     break;
                 case 3:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.delete"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.deleteStaffView();
                     break;
                 case 4:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.view"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.listStaffView();
                     break;
                 case 5:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.view"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.searchStaffView();
                     break;
                 case 6:
                     closeView = true;
-                    new MainAdminView();
+                    new Application();
                     break;
                 default:
                     System.out.println("Chức năng không hợp lệ!");
@@ -190,6 +206,14 @@ public class StaffAdminView {
                     if (permission.trim().contains(" ") || permission.isEmpty() || (!permission.isEmpty() && !permission.matches("\\d+(,\\d+)*"))) {
                         System.out.println("Quyền hạn không hợp lệ!");
                         return;
+                    } else {
+                        String[] permissionParts = permission.split(",");
+                        for (String part : permissionParts) {
+                            if (!permissions.stream().anyMatch(p -> p.getId() == Integer.parseInt(part))) {
+                                System.out.println("Quyền hạn không hợp lệ!");
+                                return;
+                            }
+                        }
                     }
                     break;
                 case 2:
@@ -407,24 +431,20 @@ public class StaffAdminView {
                         updateStaff.getMember().getRole() == Role.SERVICE_CLERK ?
                                 "Nhân viên phục vụ" :
                                 "Thành viên"));
-        System.out.println("|-- 1. Thành viên");
-        System.out.println("|-- 2. Quản lý");
-        System.out.println("|-- 3. Nhân viên kho");
-        System.out.println("|-- 4. Nhân viên phục vụ");
+        System.out.println("|-- 1. Quản lý");
+        System.out.println("|-- 2. Nhân viên kho");
+        System.out.println("|-- 3. Nhân viên phục vụ");
         System.out.print("Chọn 1 lựa chọn (Không muốn thay đổi, nhấn số bất kỳ ngoài khoảng): ");
         Role role = null;
         try {
             switch (sc.nextInt()) {
                 case 1:
-                    role = Role.MEMBER;
-                    break;
-                case 2:
                     role = Role.MANAGER;
                     break;
-                case 3:
+                case 2:
                     role = Role.INVENTORY_CLERK;
                     break;
-                case 4:
+                case 3:
                     role = Role.SERVICE_CLERK;
                     break;
                 default:
@@ -436,20 +456,17 @@ public class StaffAdminView {
             return;
         }
 
-        String permission = "";
-        if ((role != null && role != Role.MEMBER) || updateStaff.getMember().getRole() != Role.MEMBER) {
-            List<Permission> permissions = PermissionAdminController.getAllPermissions();
-            this.loadPermissions(permissions);
-            System.out.println("Quyền hạn hiện tại: [" + updatePermissions
-                    .stream()
-                    .map(p -> String.valueOf(p.getId()))
-                    .collect(Collectors.joining(",")) + "]");
-            System.out.print("Quyền hạn mới (Không muốn thay đổi, nhấn Enter - Thu hồi mọi quyền hạn, nhấn 0): ");
-            permission = sc.nextLine();
-            if (!permission.isEmpty() && (permission.trim().contains(" ") || (role != Role.MEMBER && permission.isEmpty()) || (!permission.isEmpty() && !permission.matches("\\d+(,\\d+)*")))) {
-                System.out.println("Quyền hạn không hợp lệ!");
-                return;
-            }
+        List<Permission> permissions = PermissionAdminController.getAllPermissions();
+        this.loadPermissions(permissions);
+        System.out.println("Quyền hạn hiện tại: [" + updatePermissions
+                .stream()
+                .map(p -> String.valueOf(p.getId()))
+                .collect(Collectors.joining(",")) + "]");
+        System.out.print("Quyền hạn mới (Không muốn thay đổi, nhấn Enter - Thu hồi mọi quyền hạn, nhấn 0): ");
+        String permission = sc.nextLine();
+        if (!permission.isEmpty() && (permission.trim().contains(" ") || !permission.matches("\\d+(,\\d+)*"))) {
+            System.out.println("Quyền hạn không hợp lệ!");
+            return;
         }
 
         System.out.println("Lương hiện tại: " + NumberFormat.getCurrencyInstance(new Locale("vi", "VN")).format(updateStaff.getSalary()));
@@ -480,7 +497,7 @@ public class StaffAdminView {
                     System.out.println("|-- 3. Vàng");
                     System.out.println("|-- 4. Bạch kim");
                     System.out.println("|-- 5. Kim cương");
-                    System.out.print("Hạng thành viên mới: ");
+                    System.out.print("Hạng thành viên mới (Không muốn thay đổi, nhấn số bất kỳ ngoài khoảng): ");
                     try {
                         switch (sc.nextInt()) {
                             case 1:
@@ -499,14 +516,14 @@ public class StaffAdminView {
                                 membershipTier = MembershipTier.DIAMOND;
                                 break;
                             default:
-                                System.out.println("Chức năng không hợp lệ!");
-                                return;
+                                break;
                         }
                         sc.nextLine();
                     } catch (InputMismatchException e) {
                         System.out.println("Lỗi nhập liệu! Vui lòng nhập lại.");
                         return;
                     }
+
                     System.out.println("Bạn có muốn cập nhật điểm tích lũy không?");
                     System.out.println("|-- 1. Có");
                     System.out.println("|-- 2. Không");
@@ -515,6 +532,7 @@ public class StaffAdminView {
                         switch (sc.nextInt()) {
                             case 1:
                                 try {
+                                    sc.nextLine();
                                     System.out.print("Nhập điểm tích lũy mới: ");
                                     loyaltyPoint = sc.nextFloat();
                                     sc.nextLine();
@@ -537,6 +555,7 @@ public class StaffAdminView {
                         System.out.println("Lỗi nhập liệu! Vui lòng nhập lại.");
                         return;
                     }
+
                     System.out.println("Bạn có muốn cập nhật ngày tạo thẻ không?");
                     System.out.println("|-- 1. Có");
                     System.out.println("|-- 2. Không");
@@ -696,8 +715,7 @@ public class StaffAdminView {
             } else {
                 List<Staff> matchStaffs = StaffAdminController.searchStaff(query);
 
-                String[] headers = {"ID", "Tên", "Email", "Mật khẩu", "Số điện thoại", "Ngày sinh", "Giới tính", "Lương", "Hạng thành viên", "Điểm tích lũy", "Ngày tạo thẻ", "Vai trò", "Quyền hạn"};
-                DataTable.printStaffTable(headers, matchStaffs);
+                this.displayStaffList(matchStaffs);
             }
         }
     }

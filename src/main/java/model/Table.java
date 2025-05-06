@@ -1,26 +1,22 @@
 package main.java.model;
 
-
 import main.java.model.enums.TableStatus;
 
-/**
- * @author MnhTng
- * @Package Models
- * @date 4/16/2025 6:00 PM
- * @Copyright tùng
- */
+import java.time.LocalDateTime;
 
 public class Table {
     private int id;
     private int seatCount;
     private TableStatus status;
+    private LocalDateTime deleteAt;
 
     public Table() {}
 
-    public Table(int id, int seatCount, TableStatus status) {
+    public Table(int id, int seatCount, TableStatus status, LocalDateTime deleteAt) {
         this.id = id;
         this.seatCount = seatCount;
         this.status = status;
+        this.deleteAt = deleteAt;
     }
 
     public int getId() {
@@ -45,5 +41,13 @@ public class Table {
 
     public void setStatus(TableStatus status) {
         this.status = status;
+    }
+
+    public LocalDateTime getDeleteAt() {
+        return deleteAt;
+    }
+
+    public void setDeleteAt(LocalDateTime deleteAt) {
+        this.deleteAt = deleteAt;
     }
 }

@@ -1,61 +1,90 @@
 package main.java.model;
 
-/**
- * @author MnhTng
- * @Package Models
- * @date 4/16/2025 5:59 PM
- * @Copyright tùng
- */
+import main.java.model.enums.PurchaseInvoiceStatus;
+
+import java.time.LocalDateTime;
 
 public class PurchaseInvoiceDetail {
-    private int id;
-    private int purchaseInvoiceId;
-    private int supplierIngredientId;
-    private int quantity;
+    private String id;
+    private String purchaseInvoiceId;
+    private int expectedIngredient;
+    private int actualIngredient;
+    private float expectedQuantity;
+    private float actualQuantity;
     private float unitPrice;
     private float subTotal;
+    private LocalDateTime updatedAt;
+    private int updatedBy;
+    private PurchaseInvoiceStatus status;
+    private String note;
+
+    private PurchaseInvoice purchaseInvoice;
+    private Ingredient ingredient;
+    private Staff staff;
 
     public PurchaseInvoiceDetail() {}
 
-    public PurchaseInvoiceDetail(int id, int purchaseInvoiceId, int supplierIngredientId, int quantity, float unitPrice, float subTotal) {
+    public PurchaseInvoiceDetail(String id, String purchaseInvoiceId, int expectedIngredient, int actualIngredient, float expectedQuantity, float actualQuantity, float unitPrice, float subTotal, LocalDateTime updatedAt, int updatedBy, PurchaseInvoiceStatus status, String note) {
         this.id = id;
         this.purchaseInvoiceId = purchaseInvoiceId;
-        this.supplierIngredientId = supplierIngredientId;
-        this.quantity = quantity;
+        this.expectedIngredient = expectedIngredient;
+        this.actualIngredient = actualIngredient;
+        this.expectedQuantity = expectedQuantity;
+        this.actualQuantity = actualQuantity;
         this.unitPrice = unitPrice;
         this.subTotal = subTotal;
+        this.updatedAt = updatedAt;
+        this.updatedBy = updatedBy;
+        this.status = status;
+        this.note = note;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getPurchaseInvoiceId() {
+    public String getPurchaseInvoiceId() {
         return purchaseInvoiceId;
     }
 
-    public void setPurchaseInvoiceId(int purchaseInvoiceId) {
+    public void setPurchaseInvoiceId(String purchaseInvoiceId) {
         this.purchaseInvoiceId = purchaseInvoiceId;
     }
 
-    public int getSupplierIngredientId() {
-        return supplierIngredientId;
+    public int getExpectedIngredient() {
+        return expectedIngredient;
     }
 
-    public void setSupplierIngredientId(int supplierIngredientId) {
-        this.supplierIngredientId = supplierIngredientId;
+    public void setExpectedIngredient(int expectedIngredient) {
+        this.expectedIngredient = expectedIngredient;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getActualIngredient() {
+        return actualIngredient;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setActualIngredient(int actualIngredient) {
+        this.actualIngredient = actualIngredient;
+    }
+
+    public float getExpectedQuantity() {
+        return expectedQuantity;
+    }
+
+    public void setExpectedQuantity(float expectedQuantity) {
+        this.expectedQuantity = expectedQuantity;
+    }
+
+    public float getActualQuantity() {
+        return actualQuantity;
+    }
+
+    public void setActualQuantity(float actualQuantity) {
+        this.actualQuantity = actualQuantity;
     }
 
     public float getUnitPrice() {
@@ -72,5 +101,61 @@ public class PurchaseInvoiceDetail {
 
     public void setSubTotal(float subTotal) {
         this.subTotal = subTotal;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public int getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(int updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public PurchaseInvoiceStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PurchaseInvoiceStatus status) {
+        this.status = status;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public PurchaseInvoice getPurchaseInvoice() {
+        return purchaseInvoice;
+    }
+
+    public void setPurchaseInvoice(PurchaseInvoice purchaseInvoice) {
+        this.purchaseInvoice = purchaseInvoice;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 }

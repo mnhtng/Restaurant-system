@@ -7,13 +7,6 @@ import main.java.model.enums.Role;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * @author MnhTng
- * @Package Models
- * @date 4/16/2025 5:53 PM
- * @Copyright tùng
- */
-
 public class Member {
     private int id;
     private String name;

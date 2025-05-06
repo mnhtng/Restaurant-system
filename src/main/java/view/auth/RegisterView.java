@@ -10,13 +10,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-/**
- * @author MnhTng
- * @Package main.java.view.ui
- * @date 4/17/2025 6:06 PM
- * @Copyright tùng
- */
-
 public class RegisterView {
     public RegisterView() {
         Scanner sc = new Scanner(System.in);

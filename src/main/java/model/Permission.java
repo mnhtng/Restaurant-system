@@ -1,12 +1,5 @@
 package main.java.model;
 
-/**
- * @author MnhTng
- * @Package main.java.model
- * @date 4/24/2025 4:05 PM
- * @Copyright tùng
- */
-
 public class Permission {
     private int id;
     private String name;

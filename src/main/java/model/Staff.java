@@ -7,13 +7,6 @@ import main.java.model.enums.Role;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * @author MnhTng
- * @Package Models
- * @date 4/16/2025 5:54 PM
- * @Copyright tùng
- */
-
 public class Staff {
     private int id;
     private float salary;

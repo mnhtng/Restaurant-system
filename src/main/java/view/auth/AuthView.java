@@ -6,17 +6,10 @@ import main.java.util.Session;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-/**
- * @author MnhTng
- * @Package main.java.view.auth
- * @date 4/23/2025 10:15 PM
- * @Copyright tùng
- */
-
 public class AuthView {
     public AuthView() {
         while (!Session.getInstance().isAuthenticated()) {
-            show();
+            this.show();
         }
 
         new Application();

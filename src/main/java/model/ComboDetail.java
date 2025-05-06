@@ -1,17 +1,13 @@
 package main.java.model;
 
-/**
- * @author MnhTng
- * @Package Models
- * @date 4/16/2025 6:02 PM
- * @Copyright tùng
- */
-
 public class ComboDetail {
     private int id;
     private int comboId;
     private int dishId;
     private int quantity;
+
+    private Dish dish;
+    private Combo combo;
 
     public ComboDetail() {}
 
@@ -52,5 +48,21 @@ public class ComboDetail {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Dish getDish() {
+        return dish;
+    }
+
+    public void setDish(Dish dish) {
+        this.dish = dish;
+    }
+
+    public Combo getCombo() {
+        return combo;
+    }
+
+    public void setCombo(Combo combo) {
+        this.combo = combo;
     }
 }

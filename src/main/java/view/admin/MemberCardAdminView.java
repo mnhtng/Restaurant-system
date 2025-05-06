@@ -1,13 +1,14 @@
 package main.java.view.admin;
 
+import main.java.Application;
 import main.java.component.DataTable;
 import main.java.controller.admin.MemberAdminController;
 import main.java.controller.admin.MemberCardAdminController;
-import main.java.controller.admin.StaffAdminController;
+import main.java.controller.admin.PermissionAdminController;
 import main.java.model.Member;
 import main.java.model.Permission;
-import main.java.model.Staff;
 import main.java.model.enums.MembershipTier;
+import main.java.util.Session;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,23 +17,18 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * @author MnhTng
- * @Package main.java.view.admin
- * @date 4/30/2025 10:48 AM
- * @Copyright tùng
- */
-
 public class MemberCardAdminView {
     private boolean closeView = false;
 
     public MemberCardAdminView() {
         while (!closeView) {
-            show();
+            this.show();
         }
     }
 
     public void show() {
+        List<Permission> permissions = PermissionAdminController.getPermissionsById(Session.getInstance().getCurrentUser().getId());
+
         Scanner sc = new Scanner(System.in);
 
         System.out.println("========== Quản lý thẻ thành viên ==========");
@@ -47,23 +43,43 @@ public class MemberCardAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.create"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.addMemberCardView();
                     break;
                 case 2:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.update"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.updateMemberCardView();
                     break;
                 case 3:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.delete"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.deleteMemberCardView();
                     break;
                 case 4:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.view"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.listMemberCardView();
                     break;
                 case 5:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.view"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.searchMemberCardView();
                     break;
                 case 6:
                     closeView = true;
-                    new MainAdminView();
+                    new Application();
                     break;
                 default:
                     System.out.println("Chức năng không hợp lệ!");
@@ -256,7 +272,7 @@ public class MemberCardAdminView {
     public void listMemberCardView() {
         System.out.println("========== Danh sách thẻ thành viên ==========");
 
-        List<Member> members = MemberAdminController.getMemberCardList();
+        List<Member> members = MemberCardAdminController.getMemberCardList();
         this.displayMemberCardList(members);
     }
 
@@ -286,10 +302,9 @@ public class MemberCardAdminView {
             if (query.equals("\'0\'")) {
                 isClose = true;
             } else {
-                List<Member> matchMemberCard = MemberAdminController.searchMemberCard(query);
+                List<Member> matchMemberCard = MemberCardAdminController.searchMemberCard(query);
 
-                String[] headers = {"ID", "Tên", "Số điện thoại", "Hạng thành viên", "Điểm tích lũy", "Ngày tạo thẻ"};
-                DataTable.printMemberCardTable(headers, matchMemberCard);
+                this.displayMemberCardList(matchMemberCard);
             }
         }
     }

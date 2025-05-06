@@ -1,5 +1,6 @@
 package main.java.view.admin;
 
+import main.java.Application;
 import main.java.component.DataTable;
 import main.java.controller.admin.MemberAdminController;
 import main.java.controller.admin.PermissionAdminController;
@@ -8,34 +9,28 @@ import main.java.model.Permission;
 import main.java.model.enums.Gender;
 import main.java.model.enums.MembershipTier;
 import main.java.model.enums.Role;
+import main.java.util.Session;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
-
-/**
- * @author MnhTng
- * @Package main.java.view.admin
- * @date 4/24/2025 2:53 PM
- * @Copyright tùng
- */
 
 public class MemberAdminView {
     private boolean closeView = false;
 
     public MemberAdminView() {
         while (!closeView) {
-            show();
+            this.show();
         }
     }
 
     public void show() {
+        List<Permission> permissions = PermissionAdminController.getPermissionsById(Session.getInstance().getCurrentUser().getId());
+
         Scanner sc = new Scanner(System.in);
 
         System.out.println("========== Quản lý thành viên ==========");
@@ -50,23 +45,43 @@ public class MemberAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.create"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.addMemberView();
                     break;
                 case 2:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.update"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.updateMemberView();
                     break;
                 case 3:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.delete"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.deleteMemberView();
                     break;
                 case 4:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.view"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.listMemberView();
                     break;
                 case 5:
+                    if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.view"))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     this.searchMemberView();
                     break;
                 case 6:
                     this.closeView = true;
-                    new MainAdminView();
+                    new Application();
                     break;
                 default:
                     System.out.println("Chức năng không hợp lệ!");
@@ -190,51 +205,6 @@ public class MemberAdminView {
         }
     }
 
-    private void loadPermissions(List<Permission> permissions) {
-        System.out.println("Quyền hạn: ");
-        for (int i = 0; i < permissions.size(); i++) {
-            System.out.println("|-- " + (i + 1) + ". " + permissions.get(i).getName());
-        }
-    }
-
-    private String getMatchPermission(Role role, List<Permission> permissions) {
-        StringBuffer permissionList = new StringBuffer();
-
-        switch (role) {
-            case MANAGER:
-                for (int i = 0; i < permissions.size(); i++) {
-                    permissionList.append(i + 1);
-
-                    if (i < permissions.size() - 1) {
-                        permissionList.append(",");
-                    }
-                }
-                break;
-            case INVENTORY_CLERK:
-                for (int i = 1; i <= 15; i++) {
-                    permissionList.append(i);
-
-                    if (i < 15) {
-                        permissionList.append(",");
-                    }
-                }
-                break;
-            case SERVICE_CLERK:
-                for (int i = 16; i <= 32; i++) {
-                    permissionList.append(i);
-
-                    if (i < 32) {
-                        permissionList.append(",");
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-
-        return permissionList.toString();
-    }
-
     private void onAddMember(Member member) {
         if (MemberAdminController.addMember(member)) {
             System.out.println("Thêm thành viên thành công!");
@@ -251,7 +221,6 @@ public class MemberAdminView {
         int memberId = sc.nextInt();
         sc.nextLine();
         Member updateMember = this.checkExistMember(memberId);
-        List<Permission> updatePermissions = this.checkExistPermission(memberId);
         if (updateMember == null) {
             System.out.println("Thành viên không tồn tại!");
             return;
@@ -323,58 +292,6 @@ public class MemberAdminView {
         } catch (InputMismatchException e) {
             System.out.println("Lỗi nhập liệu! Vui lòng nhập lại.");
             return;
-        }
-
-        System.out.println("Vai trò hiện tại: " + (updateMember.getRole() == Role.MANAGER ?
-                "Quản lý" :
-                updateMember.getRole() == Role.INVENTORY_CLERK ?
-                        "Nhân viên kho" :
-                        updateMember.getRole() == Role.SERVICE_CLERK ?
-                                "Nhân viên phục vụ" :
-                                "Thành viên"));
-        System.out.println("|-- 1. Thành viên");
-        System.out.println("|-- 2. Quản lý");
-        System.out.println("|-- 3. Nhân viên kho");
-        System.out.println("|-- 4. Nhân viên phục vụ");
-        System.out.print("Chọn 1 lựa chọn (Không muốn thay đổi, nhấn số bất kỳ ngoài khoảng): ");
-        Role role = null;
-        try {
-            switch (sc.nextInt()) {
-                case 1:
-                    role = Role.MEMBER;
-                    break;
-                case 2:
-                    role = Role.MANAGER;
-                    break;
-                case 3:
-                    role = Role.INVENTORY_CLERK;
-                    break;
-                case 4:
-                    role = Role.SERVICE_CLERK;
-                    break;
-                default:
-                    break;
-            }
-            sc.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Lỗi nhập liệu! Vui lòng nhập lại.");
-            return;
-        }
-
-        String permission = "";
-        if ((role != null && role != Role.MEMBER) || updateMember.getRole() != Role.MEMBER) {
-            List<Permission> permissions = PermissionAdminController.getAllPermissions();
-            this.loadPermissions(permissions);
-            System.out.println("Quyền hạn hiện tại: [" + updatePermissions
-                    .stream()
-                    .map(p -> String.valueOf(p.getId()))
-                    .collect(Collectors.joining(",")) + "]");
-            System.out.print("Quyền hạn mới (Không muốn thay đổi, nhấn Enter - Thu hồi mọi quyền hạn, nhấn 0): ");
-            permission = sc.nextLine();
-            if (!permission.isEmpty() && (permission.trim().contains(" ") || (role != Role.MEMBER && permission.isEmpty()) || (!permission.isEmpty() && !permission.matches("\\d+(,\\d+)*")))) {
-                System.out.println("Quyền hạn không hợp lệ!");
-                return;
-            }
         }
 
         System.out.println("Thông tin thẻ thành viên hiện tại: ");
@@ -498,19 +415,13 @@ public class MemberAdminView {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         member.setBirthday(birthday.trim().isEmpty() ? updateMember.getBirthday() : LocalDate.parse(birthday.trim(), formatter));
         member.setGender(gender == null ? updateMember.getGender() : gender);
-        member.setRole(role == null ? updateMember.getRole() : role);
+        member.setRole(updateMember.getRole());
         member.setMembershipTier(membershipTier == null ? updateMember.getMembershipTier() : membershipTier);
         member.setLoyaltyPoint(loyaltyPoint == -1 ? updateMember.getLoyaltyPoint() : loyaltyPoint);
         member.setCreateCardAt(createCardAt == null ? updateMember.getCreateCardAt() : createCardAt);
         member.setDeleteAt(null);
 
-        String[] permissionParts = permission.trim().isEmpty() ?
-                updatePermissions.stream()
-                        .map(p -> String.valueOf(p.getId()))
-                        .toArray(String[]::new) :
-                permission.split(",");
-
-        this.onUpdateMember(member, permissionParts);
+        this.onUpdateMember(member);
     }
 
     private Member checkExistMember(int memberId) {
@@ -521,12 +432,8 @@ public class MemberAdminView {
                 .orElse(null);
     }
 
-    private List<Permission> checkExistPermission(int memberId) {
-        return PermissionAdminController.getPermissionsById(memberId);
-    }
-
-    private void onUpdateMember(Member member, String[] permissionParts) {
-        if (MemberAdminController.updateMember(member, permissionParts)) {
+    private void onUpdateMember(Member member) {
+        if (MemberAdminController.updateMember(member)) {
             System.out.println("Cập nhật thành viên thành công!");
         } else {
             System.out.println("Xảy ra lỗi khi cập nhật thành viên!");
@@ -610,8 +517,7 @@ public class MemberAdminView {
             } else {
                 List<Member> matchMembers = MemberAdminController.searchMember(query);
 
-                String[] headers = {"ID", "Tên", "Email", "Mật khẩu", "Số điện thoại", "Ngày sinh", "Giới tính", "Hạng thành viên", "Điểm tích lũy", "Ngày tạo thẻ", "Vai trò", "Quyền hạn"};
-                DataTable.printMemberTable(headers, matchMembers);
+                this.displayMemberList(matchMembers);
             }
         }
     }

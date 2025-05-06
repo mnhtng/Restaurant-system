@@ -1,29 +1,25 @@
 package main.java.model;
 
-import java.time.LocalDate;
-
-/**
- * @author MnhTng
- * @Package Models
- * @date 4/16/2025 5:58 PM
- * @Copyright tùng
- */
+import java.time.LocalDateTime;
 
 public class Ingredient {
     private int id;
     private String name;
     private String category;
     private String unit;
-    private LocalDate expire;
+    private boolean status;
+    private LocalDateTime deleteAt;
 
-    public Ingredient() {}
+    public Ingredient() {
+    }
 
-    public Ingredient(int id, String name, String category, String unit, LocalDate expire) {
+    public Ingredient(int id, String name, String category, String unit, boolean status, LocalDateTime deleteAt) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.unit = unit;
-        this.expire = expire;
+        this.status = status;
+        this.deleteAt = deleteAt;
     }
 
     public int getId() {
@@ -58,11 +54,19 @@ public class Ingredient {
         this.unit = unit;
     }
 
-    public LocalDate getExpire() {
-        return expire;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setExpire(LocalDate expire) {
-        this.expire = expire;
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getDeleteAt() {
+        return deleteAt;
+    }
+
+    public void setDeleteAt(LocalDateTime deleteAt) {
+        this.deleteAt = deleteAt;
     }
 }

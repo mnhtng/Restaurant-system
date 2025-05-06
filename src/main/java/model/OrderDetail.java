@@ -1,55 +1,48 @@
 package main.java.model;
 
-/**
- * @author MnhTng
- * @Package Models
- * @date 4/16/2025 6:01 PM
- * @Copyright tùng
- */
-
-public class OrderDish {
-    private int id;
-    private int orderId;
-    private int dishId;
+public class OrderDetail {
+    private String id;
+    private String orderId;
+    private int productId;
     private int quantity;
     private float unitPrice;
     private float subTotal;
     private String note;
 
-    public OrderDish() {}
+    public OrderDetail() {}
 
-    public OrderDish(int id, int orderId, int dishId, int quantity, float unitPrice, float subTotal, String note) {
+    public OrderDetail(String id, String orderId, int productId, int quantity, float unitPrice, float subTotal, String note) {
         this.id = id;
         this.orderId = orderId;
-        this.dishId = dishId;
+        this.productId = productId;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.subTotal = subTotal;
         this.note = note;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
-    public int getDishId() {
-        return dishId;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setDishId(int dishId) {
-        this.dishId = dishId;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public int getQuantity() {

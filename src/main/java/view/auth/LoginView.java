@@ -2,16 +2,8 @@ package main.java.view.auth;
 
 import main.java.Application;
 import main.java.controller.AuthController;
-import main.java.view.admin.MainAdminView;
 
 import java.util.Scanner;
-
-/**
- * @author MnhTng
- * @Package main.java.view.ui
- * @date 4/17/2025 6:06 PM
- * @Copyright tùng
- */
 
 public class LoginView {
     public LoginView() {

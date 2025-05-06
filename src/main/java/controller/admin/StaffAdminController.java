@@ -3,19 +3,10 @@ package main.java.controller.admin;
 import main.java.dao.MemberDAO;
 import main.java.dao.PermissionDAO;
 import main.java.dao.StaffDAO;
-import main.java.model.Member;
 import main.java.model.Permission;
 import main.java.model.Staff;
 
-import java.util.Arrays;
 import java.util.List;
-
-/**
- * @author MnhTng
- * @Package main.java.controller.admin
- * @date 4/28/2025 6:12 PM
- * @Copyright tùng
- */
 
 public class StaffAdminController {
     public static List<Staff> getAllStaffs() {

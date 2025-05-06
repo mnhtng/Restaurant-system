@@ -7,13 +7,6 @@ import main.java.view.admin.MainAdminView;
 import main.java.view.auth.AuthView;
 import main.java.view.member.MainMemberView;
 
-/**
- * @author MnhTng
- * @Package main.java
- * @date 4/17/2025 3:36 PM
- * @Copyright tùng
- */
-
 public class Application {
     public Application() {
         if (Session.getInstance().isAuthenticated()) {

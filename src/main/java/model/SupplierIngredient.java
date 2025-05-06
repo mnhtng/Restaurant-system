@@ -1,18 +1,14 @@
 package main.java.model;
 
-/**
- * @author MnhTng
- * @Package Models
- * @date 4/16/2025 5:59 PM
- * @Copyright tùng
- */
-
 public class SupplierIngredient {
     private int id;
     private int supplierId;
     private int ingredientId;
     private float defaultPrice;
     private boolean isPrimary;
+
+    private Supplier supplier;
+    private Ingredient ingredient;
 
     public SupplierIngredient() {}
 
@@ -62,5 +58,21 @@ public class SupplierIngredient {
 
     public void setPrimary(boolean primary) {
         isPrimary = primary;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 }

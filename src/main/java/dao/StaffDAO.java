@@ -8,21 +8,12 @@ import main.java.model.enums.Role;
 import main.java.util.JDBCConnection;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * @author MnhTng
- * @Package main.java.dao
- * @date 4/17/2025 5:58 PM
- * @Copyright tùng
- */
 
 public class StaffDAO {
     public static List<Staff> getAllStaffs() {
@@ -130,7 +121,7 @@ public class StaffDAO {
     }
 
     public static boolean addStaff(Staff staff) {
-        String sql = "INSERT staff (id, salary) VALUES (?, ?)";
+        String sql = "INSERT INTO staff (id, salary) VALUES (?, ?)";
         Connection connection = JDBCConnection.getInstance().getConnection();
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

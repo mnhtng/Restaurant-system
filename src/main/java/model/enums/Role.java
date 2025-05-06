@@ -1,12 +1,5 @@
 package main.java.model.enums;
 
-/**
- * @author MnhTng
- * @Package main.java.model.enums
- * @date 4/16/2025 6:56 PM
- * @Copyright tùng
- */
-
 public enum Role {
     MEMBER(0), MANAGER(1), INVENTORY_CLERK(2), SERVICE_CLERK(3);
 

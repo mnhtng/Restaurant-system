@@ -1,18 +1,15 @@
 package main.java.view.admin;
 
 import main.java.controller.AuthController;
+import main.java.controller.admin.PermissionAdminController;
+import main.java.model.Permission;
 import main.java.util.Session;
 import main.java.view.auth.AuthView;
 
 import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
-
-/**
- * @author MnhTng
- * @Package main.java.view.admin
- * @date 4/23/2025 10:35 PM
- * @Copyright tùng
- */
 
 public class MainAdminView {
     public MainAdminView() {
@@ -24,6 +21,8 @@ public class MainAdminView {
     }
 
     public void show() {
+        List<Permission> permissions = PermissionAdminController.getPermissionsById(Session.getInstance().getCurrentUser().getId());
+
         Scanner sc = new Scanner(System.in);
 
         System.out.println("========== Giao diện quản lý ==========");
@@ -45,40 +44,88 @@ public class MainAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    if (permissions.stream().noneMatch(p -> List.of("member.view", "member.create", "member.update", "member.delete").contains(p.getSlug()))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     new MemberAdminView();
                     break;
                 case 2:
+                    if (permissions.stream().noneMatch(p -> List.of("member.view", "member.create", "member.update", "member.delete").contains(p.getSlug()))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     new StaffAdminView();
                     break;
                 case 3:
+                    if (permissions.stream().noneMatch(p -> List.of("member.view", "member.create", "member.update", "member.delete").contains(p.getSlug()))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     new MemberCardAdminView();
                     break;
                 case 4:
+                    if (permissions.stream().noneMatch(p -> List.of("supplier.view", "supplier.create", "supplier.update", "supplier.delete").contains(p.getSlug()))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
                     new SupplierAdminView();
                     break;
                 case 5:
-                    // new IngredientView();
+                    if (permissions.stream().noneMatch(p -> List.of("ingredient.view", "ingredient.create", "ingredient.update", "ingredient.delete").contains(p.getSlug()))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
+                    new IngredientAdminView();
                     break;
                 case 6:
-                    // new WarehouseView();
+                    if (permissions.stream().noneMatch(p -> List.of("warehouse.view", "warehouse.create", "warehouse.update", "warehouse.delete").contains(p.getSlug()))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
+                    new WarehouseAdminView();
                     break;
                 case 7:
-                    // new InventoryInvoiceView();
+                    if (permissions.stream().noneMatch(p -> List.of("purchase_invoice.view", "purchase_invoice.create", "purchase_invoice.update").contains(p.getSlug()))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
+                    new InventoryInvoiceAdminView();
                     break;
                 case 8:
-                    // new DishView();
+                    if (permissions.stream().noneMatch(p -> List.of("dish.view", "dish.create", "dish.update", "dish.delete").contains(p.getSlug()))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
+                    new DishAdminView();
                     break;
                 case 9:
-                    // new ComboView();
+                    if (permissions.stream().noneMatch(p -> List.of("combo.view", "combo.create", "combo.update", "combo.delete").contains(p.getSlug()))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
+                    new ComboAdminView();
                     break;
                 case 10:
-                    // new TableView();
+                    if (permissions.stream().noneMatch(p -> List.of("table.view", "table.create", "table.update", "table.delete").contains(p.getSlug()))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
+                    new TableAdminView();
                     break;
                 case 11:
-                    // new OrderInvoiceView();
+                    if (permissions.stream().noneMatch(p -> List.of("order.view", "order.create", "order.update").contains(p.getSlug()))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
+                    new OrderAdminView();
                     break;
                 case 12:
-                    // new RevenueView();
+                    if (permissions.stream().noneMatch(p -> Objects.equals("revenue_report.view", p.getSlug()))) {
+                        System.out.println("Bạn không có quyền truy cập vào chức năng này.");
+                        return;
+                    }
+                    new RevenueAdminView();
                     break;
                 case 13:
                     AuthController.logout();

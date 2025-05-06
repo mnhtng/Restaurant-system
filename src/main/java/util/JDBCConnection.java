@@ -4,13 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * @author MnhTng
- * @Package main.java.util
- * @date 4/17/2025 4:18 PM
- * @Copyright tùng
- */
-
 public class JDBCConnection {
     private static JDBCConnection instance;
     private static final String url = "jdbc:sqlserver://localhost:1433;database=RestaurantSystem;encrypt=true;trustServerCertificate=true;";

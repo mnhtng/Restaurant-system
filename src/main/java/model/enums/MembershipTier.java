@@ -1,12 +1,5 @@
 package main.java.model.enums;
 
-/**
- * @author MnhTng
- * @Package main.java.model.enums
- * @date 4/16/2025 9:43 PM
- * @Copyright tùng
- */
-
 public enum MembershipTier {
     BRONZE(0, 0.01f),
     SILVER(1, 0.03f),

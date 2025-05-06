@@ -1,24 +1,19 @@
 package main.java.model;
 
-import java.time.LocalDate;
-
-/**
- * @author MnhTng
- * @Package Models
- * @date 4/16/2025 5:59 PM
- * @Copyright tùng
- */
+import java.time.LocalDateTime;
 
 public class PurchaseInvoice {
-    private int id;
+    private String id;
     private int supplierId;
     private int inventoryClerkId;
     private float totalAmount;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
+
+    private Supplier supplier;
 
     public PurchaseInvoice() {}
 
-    public PurchaseInvoice(int id, int supplierId, int inventoryClerkId, float totalAmount, LocalDate createdAt) {
+    public PurchaseInvoice(String id, int supplierId, int inventoryClerkId, float totalAmount, LocalDateTime createdAt) {
         this.id = id;
         this.supplierId = supplierId;
         this.inventoryClerkId = inventoryClerkId;
@@ -26,11 +21,11 @@ public class PurchaseInvoice {
         this.createdAt = createdAt;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -58,11 +53,19 @@ public class PurchaseInvoice {
         this.totalAmount = totalAmount;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 }

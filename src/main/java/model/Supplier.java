@@ -1,25 +1,23 @@
 package main.java.model;
 
-/**
- * @author MnhTng
- * @Package Models
- * @date 4/16/2025 5:58 PM
- * @Copyright tùng
- */
+import java.time.LocalDateTime;
 
 public class Supplier {
     private int id;
     private String name;
     private String address;
     private String phone;
+    private LocalDateTime deleteAt;
 
-    public Supplier() {}
+    public Supplier() {
+    }
 
-    public Supplier(int id, String name, String address, String phone) {
+    public Supplier(int id, String name, String address, String phone, LocalDateTime deleteAt) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
+        this.deleteAt = deleteAt;
     }
 
     public int getId() {
@@ -52,5 +50,13 @@ public class Supplier {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public LocalDateTime getDeleteAt() {
+        return deleteAt;
+    }
+
+    public void setDeleteAt(LocalDateTime deleteAt) {
+        this.deleteAt = deleteAt;
     }
 }
