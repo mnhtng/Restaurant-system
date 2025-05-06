@@ -7,6 +7,7 @@ import main.java.controller.admin.StaffAdminController;
 import main.java.controller.admin.TableAdminController;
 import main.java.controller.member.OrderDetailMemberController;
 import main.java.controller.member.OrderMemberController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Combo;
 import main.java.model.Dish;
 import main.java.model.Order;
@@ -47,9 +48,11 @@ public class OrderMemberView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     this.addOrderView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     closeView = true;
                     new MainMemberView();
                     break;

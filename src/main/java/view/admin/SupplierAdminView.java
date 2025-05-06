@@ -5,6 +5,7 @@ import main.java.component.DataTable;
 import main.java.controller.admin.IngredientAdminController;
 import main.java.controller.admin.PermissionAdminController;
 import main.java.controller.admin.SupplierAdminController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Permission;
 import main.java.model.Supplier;
 import main.java.model.SupplierIngredient;
@@ -45,6 +46,7 @@ public class SupplierAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("supplier.create"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -52,6 +54,7 @@ public class SupplierAdminView {
                     this.addSupplierView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("supplier.update"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -59,6 +62,7 @@ public class SupplierAdminView {
                     this.updateSupplierView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("supplier.update"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -66,6 +70,7 @@ public class SupplierAdminView {
                     this.setMainSupplierView();
                     break;
                 case 4:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("supplier.delete"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -73,6 +78,7 @@ public class SupplierAdminView {
                     this.deleteSupplierView();
                     break;
                 case 5:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("supplier.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -80,6 +86,7 @@ public class SupplierAdminView {
                     this.listSupplierView();
                     break;
                 case 6:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("supplier.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;

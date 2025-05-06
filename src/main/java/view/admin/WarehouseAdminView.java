@@ -4,6 +4,7 @@ import main.java.Application;
 import main.java.component.DataTable;
 import main.java.controller.admin.PermissionAdminController;
 import main.java.controller.admin.WarehouseAdminController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Permission;
 import main.java.model.Warehouse;
 import main.java.util.Session;
@@ -39,6 +40,7 @@ public class WarehouseAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("warehouse.update"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -46,6 +48,7 @@ public class WarehouseAdminView {
                     this.updateWarehouseView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("warehouse.delete"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -53,6 +56,7 @@ public class WarehouseAdminView {
                     this.deleteWarehouseView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("warehouse.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -60,6 +64,7 @@ public class WarehouseAdminView {
                     this.listWarehouseView();
                     break;
                 case 4:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("warehouse.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;

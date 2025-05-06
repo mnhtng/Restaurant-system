@@ -6,6 +6,7 @@ import main.java.controller.admin.DishAdminController;
 import main.java.controller.admin.IngredientAdminController;
 import main.java.controller.admin.PermissionAdminController;
 import main.java.controller.admin.ProductAdminController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Dish;
 import main.java.model.Ingredient;
 import main.java.model.Permission;
@@ -48,6 +49,7 @@ public class DishAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("dish.create"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -55,6 +57,7 @@ public class DishAdminView {
                     this.addDishView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("dish.update"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -62,6 +65,7 @@ public class DishAdminView {
                     this.updateDishView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("dish.delete"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -69,6 +73,7 @@ public class DishAdminView {
                     this.deleteDishView();
                     break;
                 case 4:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("dish.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -76,6 +81,7 @@ public class DishAdminView {
                     this.listDishView();
                     break;
                 case 5:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("dish.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;

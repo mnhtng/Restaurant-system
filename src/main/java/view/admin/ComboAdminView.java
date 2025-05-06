@@ -6,6 +6,7 @@ import main.java.controller.admin.ComboAdminController;
 import main.java.controller.admin.DishAdminController;
 import main.java.controller.admin.PermissionAdminController;
 import main.java.controller.admin.ProductAdminController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Combo;
 import main.java.model.ComboDetail;
 import main.java.model.Permission;
@@ -46,6 +47,7 @@ public class ComboAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("combo.create"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -53,6 +55,7 @@ public class ComboAdminView {
                     this.addComboView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("combo.update"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -60,6 +63,7 @@ public class ComboAdminView {
                     this.updateComboView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("combo.delete"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -67,6 +71,7 @@ public class ComboAdminView {
                     this.deleteComboView();
                     break;
                 case 4:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("combo.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -74,6 +79,7 @@ public class ComboAdminView {
                     this.listComboView();
                     break;
                 case 5:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("combo.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;

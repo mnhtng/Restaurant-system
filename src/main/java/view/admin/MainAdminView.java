@@ -2,6 +2,7 @@ package main.java.view.admin;
 
 import main.java.controller.AuthController;
 import main.java.controller.admin.PermissionAdminController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Permission;
 import main.java.util.Session;
 import main.java.view.auth.AuthView;
@@ -44,6 +45,7 @@ public class MainAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("member.view", "member.create", "member.update", "member.delete").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -51,6 +53,7 @@ public class MainAdminView {
                     new MemberAdminView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("member.view", "member.create", "member.update", "member.delete").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -58,6 +61,7 @@ public class MainAdminView {
                     new StaffAdminView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("member.view", "member.create", "member.update", "member.delete").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -65,6 +69,7 @@ public class MainAdminView {
                     new MemberCardAdminView();
                     break;
                 case 4:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("supplier.view", "supplier.create", "supplier.update", "supplier.delete").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -72,6 +77,7 @@ public class MainAdminView {
                     new SupplierAdminView();
                     break;
                 case 5:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("ingredient.view", "ingredient.create", "ingredient.update", "ingredient.delete").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -79,6 +85,7 @@ public class MainAdminView {
                     new IngredientAdminView();
                     break;
                 case 6:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("warehouse.view", "warehouse.create", "warehouse.update", "warehouse.delete").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -86,6 +93,7 @@ public class MainAdminView {
                     new WarehouseAdminView();
                     break;
                 case 7:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("purchase_invoice.view", "purchase_invoice.create", "purchase_invoice.update").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -93,6 +101,7 @@ public class MainAdminView {
                     new InventoryInvoiceAdminView();
                     break;
                 case 8:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("dish.view", "dish.create", "dish.update", "dish.delete").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -100,6 +109,7 @@ public class MainAdminView {
                     new DishAdminView();
                     break;
                 case 9:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("combo.view", "combo.create", "combo.update", "combo.delete").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -107,6 +117,7 @@ public class MainAdminView {
                     new ComboAdminView();
                     break;
                 case 10:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("table.view", "table.create", "table.update", "table.delete").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -114,6 +125,7 @@ public class MainAdminView {
                     new TableAdminView();
                     break;
                 case 11:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("order.view", "order.create", "order.update").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -121,6 +133,7 @@ public class MainAdminView {
                     new OrderAdminView();
                     break;
                 case 12:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> Objects.equals("revenue_report.view", p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;

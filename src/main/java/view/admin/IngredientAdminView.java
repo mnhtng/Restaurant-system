@@ -4,6 +4,7 @@ import main.java.Application;
 import main.java.component.DataTable;
 import main.java.controller.admin.IngredientAdminController;
 import main.java.controller.admin.PermissionAdminController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Ingredient;
 import main.java.model.Permission;
 import main.java.util.SearchUtil;
@@ -40,6 +41,7 @@ public class IngredientAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("ingredient.create"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -47,6 +49,7 @@ public class IngredientAdminView {
                     this.addIngredientView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("ingredient.update"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -54,6 +57,7 @@ public class IngredientAdminView {
                     this.updateIngredientView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("ingredient.delete"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -61,6 +65,7 @@ public class IngredientAdminView {
                     this.deleteIngredientView();
                     break;
                 case 4:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("ingredient.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -68,6 +73,7 @@ public class IngredientAdminView {
                     this.listIngredientView();
                     break;
                 case 5:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("ingredient.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;

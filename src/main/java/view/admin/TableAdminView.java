@@ -3,6 +3,7 @@ package main.java.view.admin;
 import main.java.component.DataTable;
 import main.java.controller.admin.PermissionAdminController;
 import main.java.controller.admin.TableAdminController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Permission;
 import main.java.model.Table;
 import main.java.model.enums.TableStatus;
@@ -38,6 +39,7 @@ public class TableAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("table.create"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -45,6 +47,7 @@ public class TableAdminView {
                     this.addTableView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("table.update"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -52,6 +55,7 @@ public class TableAdminView {
                     this.updateTableView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("table.delete"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -59,6 +63,7 @@ public class TableAdminView {
                     this.deleteTableView();
                     break;
                 case 4:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("table.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -66,6 +71,7 @@ public class TableAdminView {
                     this.listTableView();
                     break;
                 case 5:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("table.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;

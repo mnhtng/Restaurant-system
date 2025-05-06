@@ -1,6 +1,7 @@
 package main.java.view.member;
 
 import main.java.controller.AuthController;
+import main.java.middleware.AuthMiddleware;
 import main.java.util.Session;
 import main.java.view.auth.AuthView;
 
@@ -29,12 +30,15 @@ public class MainMemberView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     new OrderMemberView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     new CancelOrderView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     new TotalOrderView();
                     break;
                 case 4:

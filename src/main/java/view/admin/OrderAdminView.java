@@ -11,6 +11,7 @@ import main.java.controller.admin.PermissionAdminController;
 import main.java.controller.admin.StaffAdminController;
 import main.java.controller.admin.TableAdminController;
 import main.java.controller.member.OrderDetailMemberController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Combo;
 import main.java.model.Dish;
 import main.java.model.Member;
@@ -41,7 +42,7 @@ public class OrderAdminView {
         }
     }
 
-    public void show(){
+    public void show() {
         List<Permission> permissions = PermissionAdminController.getPermissionsById(Session.getInstance().getCurrentUser().getId());
 
         Scanner sc = new Scanner(System.in);
@@ -55,6 +56,7 @@ public class OrderAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("order.view", "order.create", "order.update").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -62,6 +64,7 @@ public class OrderAdminView {
                     this.orderView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> List.of("order.view", "order.create", "order.update").contains(p.getSlug()))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -82,7 +85,7 @@ public class OrderAdminView {
         }
     }
 
-    public void orderView(){
+    public void orderView() {
         List<Permission> permissions = PermissionAdminController.getPermissionsById(Session.getInstance().getCurrentUser().getId());
 
         System.out.println("========== Quản lý đơn đặt bàn==========");
@@ -97,6 +100,7 @@ public class OrderAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("order.create"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -104,6 +108,7 @@ public class OrderAdminView {
                     this.addOrderView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("order.update"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -111,6 +116,7 @@ public class OrderAdminView {
                     this.updateOrderView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("order.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -118,6 +124,7 @@ public class OrderAdminView {
                     this.listOrderView();
                     break;
                 case 4:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("order.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -138,7 +145,7 @@ public class OrderAdminView {
         }
     }
 
-    public void orderInvoiceView(){
+    public void orderInvoiceView() {
         List<Permission> permissions = PermissionAdminController.getPermissionsById(Session.getInstance().getCurrentUser().getId());
 
         System.out.println("========== Quản lý hóa đơn thanh toán ==========");
@@ -152,6 +159,7 @@ public class OrderAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("order.create"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -159,6 +167,7 @@ public class OrderAdminView {
                     this.addOrderInvoiceView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("order.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -166,6 +175,7 @@ public class OrderAdminView {
                     this.listOrderInvoiceView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("order.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -186,7 +196,7 @@ public class OrderAdminView {
         }
     }
 
-    private Order checkExistOrderInvoice(String id){
+    private Order checkExistOrderInvoice(String id) {
         return OrderAdminController.getUncompletedOrder()
                 .stream()
                 .filter(orderDetail -> orderDetail.getId().equals(id))
@@ -194,14 +204,15 @@ public class OrderAdminView {
                 .orElse(null);
     }
 
-    private Order checkExistOrder(String id){
+    private Order checkExistOrder(String id) {
         return OrderAdminController.getOrderInvoice()
                 .stream()
                 .filter(orderDetail -> orderDetail.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
-    public void updateOrderView(){
+
+    public void updateOrderView() {
 //        System.out.println(2);
         System.out.println("========== Danh sách hóa đơn chưa hoàn thành ==========");
         List<Order> uncompletedOrder = OrderAdminController.getUncompletedOrder();
@@ -228,29 +239,28 @@ public class OrderAdminView {
             }
 
             this.onUpdateOrder(id, newStatus);
-        }
-        else{
+        } else {
             System.out.println("Không có hóa đơn cần cập nhật!");
         }
     }
-    private void onUpdateOrder(String id, String newStatus){
-        if (OrderAdminController.updateOrder(id, newStatus)){
+
+    private void onUpdateOrder(String id, String newStatus) {
+        if (OrderAdminController.updateOrder(id, newStatus)) {
             System.out.println("Cập nhật trạng thái hóa đơn thành công ");
-        }
-        else {
+        } else {
             System.out.println("Đã xảy ra lỗi khi cập nhật trạng thái hóa đơn!");
         }
     }
 
-    private void onUpdateOrderInvoice(String id, String paymentMethod, float totalAmount){
-        if (OrderInvoiceAdminController.updateOrderInvoice(id, paymentMethod, totalAmount)){
+    private void onUpdateOrderInvoice(String id, String paymentMethod, float totalAmount) {
+        if (OrderInvoiceAdminController.updateOrderInvoice(id, paymentMethod, totalAmount)) {
             System.out.println("Thanh toán hóa đơn " + id + " thành công ");
-        }
-        else {
+        } else {
             System.out.println("Đã xảy ra lỗi khi thanh toán hóa đơn!");
         }
     }
-    public void listOrderView(){
+
+    public void listOrderView() {
 //        System.out.println(3);
         Scanner sc = new Scanner(System.in);
 
@@ -258,17 +268,18 @@ public class OrderAdminView {
         List<Order> orderDetails = OrderAdminController.getUncompletedOrder();
         if (!orderDetails.isEmpty()) {
             this.displayListInvoice(orderDetails);
-        }
-        else{
+        } else {
             System.out.println("Danh sách hóa đơn đặt bàn trống!");
         }
     }
-    public void displayListInvoice(List<Order> orders){
+
+    public void displayListInvoice(List<Order> orders) {
         String[] headers = {"ID", "Tên khách hàng", "Mã nhân viên", "Mã bàn", "Thời gian đặt bàn", "Phương thức thanh toán", "Tổng tiền", "Trạng thái", "Thanh toán lúc", "Ghi chứ"};
 
         DataTable.printOrderTable(headers, orders);
     }
-    public void searchOrderView(){
+
+    public void searchOrderView() {
 //        System.out.println(4);
         boolean isClose = false;
 
@@ -296,7 +307,7 @@ public class OrderAdminView {
         }
     }
 
-    public void addOrderInvoiceView(){
+    public void addOrderInvoiceView() {
 //        System.out.println(1);
         Scanner sc = new Scanner(System.in);
 
@@ -304,8 +315,7 @@ public class OrderAdminView {
         List<Order> orderDetails = OrderAdminController.getUncompletedOrder();
         if (!orderDetails.isEmpty()) {
             this.displayListInvoice(orderDetails);
-        }
-        else{
+        } else {
             System.out.println("Danh sách đơn đặt bàn trống!");
         }
         System.out.print("Nhập mã đơn cần thanh toán: ");
@@ -345,18 +355,18 @@ public class OrderAdminView {
         Member customer = MemberAdminController.getMemberById(orderUpdate.getCustomerId());
         if (customer.getMembershipTier() != null) {
             float discounted = customer.getMembershipTier().getDiscountRate();
-            totalAmount -= Math.round(totalAmount*discounted * 100)/100.0f;
+            totalAmount -= Math.round(totalAmount * discounted * 100) / 100.0f;
         }
         System.out.println("Vui lòng nhập số tiền cần thanh toán (" + totalAmount + " VND ):");
         String inputMoney = sc.nextLine();
-        if (!inputMoney.equals(String.valueOf(totalAmount))){
+        if (!inputMoney.equals(String.valueOf(totalAmount))) {
             System.out.println("Số tiền thanh toán không đúng với yêu cầu!");
             return;
         }
         this.onUpdateOrderInvoice(id, paymentMethod, totalAmount);
     }
 
-    public void listOrderInvoiceView(){
+    public void listOrderInvoiceView() {
 //        System.out.println(3);
         Scanner sc = new Scanner(System.in);
 
@@ -364,13 +374,12 @@ public class OrderAdminView {
         List<Order> orderDetails = OrderAdminController.getOrderInvoice();
         if (!orderDetails.isEmpty()) {
             this.displayListInvoice(orderDetails);
-        }
-        else{
+        } else {
             System.out.println("Danh sách hóa đơn thanh toán trống!");
         }
     }
 
-    public void searchOrderInvoiceByIDView(){
+    public void searchOrderInvoiceByIDView() {
 //        System.out.println(4);
         System.out.print("Nhập mã hóa đơn cần tìm: ");
         Scanner sc = new Scanner(System.in);
@@ -393,7 +402,7 @@ public class OrderAdminView {
         System.out.println("-----------------------------------------------");
         System.out.printf(" | %-20s | %-10s | %-15s | %-15s | %n", "Món ăn", "Số lượng", "Đơn giá", "Thành tiền");
         List<OrderDetail> orderDetails = OrderDetailAdminController.findOrderDetailById(orderUpdate.getId());
-        for (OrderDetail orderDetail : orderDetails){
+        for (OrderDetail orderDetail : orderDetails) {
             String productName = null;
 
             Combo combo = ComboAdminController.getComboById(orderDetail.getProductId());
@@ -552,7 +561,7 @@ public class OrderAdminView {
                         } else {
                             System.out.println("\n========== Món đã chọn ==========");
                             if (!selectedDishes.isEmpty()) {
-                                System.out.printf("| %-5s | %-20s | %-7s | %-15s | %-15s | %n", "ID" , "Tên món", "Số lượng",  "Đơn giá (VND)" , "Thành tiền (VND)");
+                                System.out.printf("| %-5s | %-20s | %-7s | %-15s | %-15s | %n", "ID", "Tên món", "Số lượng", "Đơn giá (VND)", "Thành tiền (VND)");
                                 System.out.println("--------------------------------------------------------");
 
                                 for (int i = 0; i < selectedDishes.size(); i++) {
@@ -568,7 +577,7 @@ public class OrderAdminView {
 
                             if (!selectedCombos.isEmpty()) {
                                 System.out.println("\n========== Combo đã chọn ==========");
-                                System.out.printf("| %-5s | %-20s | %-7s | %-15s | %-15s | %n", "ID" , "Tên món", "Số lượng",  "Đơn giá (VND)" , "Thành tiền (VND)");
+                                System.out.printf("| %-5s | %-20s | %-7s | %-15s | %-15s | %n", "ID", "Tên món", "Số lượng", "Đơn giá (VND)", "Thành tiền (VND)");
                                 System.out.println("----------------------------------------------------------");
 
                                 for (int i = 0; i < selectedCombos.size(); i++) {
@@ -654,7 +663,7 @@ public class OrderAdminView {
                             String name = sc.nextLine();
 
                             Member customer = findExistMember(name);
-                            if (customer == null){
+                            if (customer == null) {
                                 System.out.println("Không tìm thấy khách hàng trong cơ sở dữ liệu!");
                                 return;
                             }
@@ -674,10 +683,9 @@ public class OrderAdminView {
 
                             if (confirm.equalsIgnoreCase("Y")) {
                                 // Cập nhật trạng thái bàn thành
-                                if (TableAdminController.updateTableStatus(selectedTable.getId(), "occupied")){
+                                if (TableAdminController.updateTableStatus(selectedTable.getId(), "occupied")) {
                                     System.out.println("Đặt bàn thành công!");
-                                }
-                                else{
+                                } else {
                                     System.out.println("Đã có lỗi xảy ra khi đặt bàn!");
                                 }
                                 int totalOrder = OrderAdminController.getTotalOrderNumber();
@@ -709,7 +717,7 @@ public class OrderAdminView {
                                 // Tạo class OrderDetail
                                 for (int i = 0; i < selectedDishes.size(); i++) {
                                     OrderDetail orderDetail = new OrderDetail();
-                                    String orderDetailId = "OD" + (totalOrderDetail + 1)  + "-" + (i + 1);
+                                    String orderDetailId = "OD" + (totalOrderDetail + 1) + "-" + (i + 1);
 
                                     int productId = selectedDishes.get(i).getId();
                                     int quantities = dishQuantities.get(i);
@@ -779,19 +787,19 @@ public class OrderAdminView {
     }
 
 
-    public void displayListDishInMenu(List<Dish> dishes){
+    public void displayListDishInMenu(List<Dish> dishes) {
         String[] headers = {"ID", "Tên món ăn", "Danh mục", "Khẩu phần", "Trạng thái", "Giá", "Nguyên liệu", "Trạng thái hiển thị trên menu", "Mô tả"};
 
         DataTable.printDishTable(headers, dishes);
     }
 
-    public void displayListComboInMenu(List<Combo> combos){
+    public void displayListComboInMenu(List<Combo> combos) {
         String[] headers = {"ID", "Tên combo", "Giá", "Món ăn trong combo", "Trạng thái hiển thị trên menu", "Mô tả"};
 
         DataTable.printComboTable(headers, combos);
     }
 
-    public void displayListTableAvailable(List<Table> tables){
+    public void displayListTableAvailable(List<Table> tables) {
         String[] headers = {"ID", "Số ghế", "Trạng thái"};
 
         DataTable.printTableTable(headers, tables);
@@ -811,10 +819,10 @@ public class OrderAdminView {
                 .orElse(null);
     }
 
-    public static Member findExistMember(String name){
+    public static Member findExistMember(String name) {
         List<Member> allMem = MemberAdminController.getAllMembers();
 
-        if (allMem == null){
+        if (allMem == null) {
             return null;
         }
 

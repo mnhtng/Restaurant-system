@@ -5,6 +5,7 @@ import main.java.component.DataTable;
 import main.java.controller.admin.MemberAdminController;
 import main.java.controller.admin.MemberCardAdminController;
 import main.java.controller.admin.PermissionAdminController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Member;
 import main.java.model.Permission;
 import main.java.model.enums.MembershipTier;
@@ -43,6 +44,7 @@ public class MemberCardAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.create"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -50,6 +52,7 @@ public class MemberCardAdminView {
                     this.addMemberCardView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.update"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -57,6 +60,7 @@ public class MemberCardAdminView {
                     this.updateMemberCardView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.delete"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -64,6 +68,7 @@ public class MemberCardAdminView {
                     this.deleteMemberCardView();
                     break;
                 case 4:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -71,6 +76,7 @@ public class MemberCardAdminView {
                     this.listMemberCardView();
                     break;
                 case 5:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;

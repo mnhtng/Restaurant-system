@@ -3,6 +3,7 @@ package main.java.view.member;
 import main.java.component.DataTable;
 import main.java.controller.admin.TableAdminController;
 import main.java.controller.member.OrderMemberController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Order;
 import main.java.util.Session;
 
@@ -31,9 +32,11 @@ public class CancelOrderView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     this.cancelOrderView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     closeView = true;
                     new MainMemberView();
                     break;

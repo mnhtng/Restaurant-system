@@ -7,6 +7,7 @@ import main.java.controller.admin.MemberAdminController;
 import main.java.controller.admin.PermissionAdminController;
 import main.java.controller.admin.PurchaseInvoiceAdminController;
 import main.java.controller.admin.SupplierAdminController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Ingredient;
 import main.java.model.Permission;
 import main.java.model.PurchaseInvoice;
@@ -52,6 +53,7 @@ public class InventoryInvoiceAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("purchase_invoice.create"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -59,6 +61,7 @@ public class InventoryInvoiceAdminView {
                     this.addInventoryInvoiceView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("purchase_invoice.update"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -66,6 +69,7 @@ public class InventoryInvoiceAdminView {
                     this.updateInventoryInvoiceView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("purchase_invoice.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -73,6 +77,7 @@ public class InventoryInvoiceAdminView {
                     this.listInventoryInvoiceView();
                     break;
                 case 4:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("purchase_invoice.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;

@@ -4,6 +4,7 @@ import main.java.Application;
 import main.java.component.DataTable;
 import main.java.controller.admin.StaffAdminController;
 import main.java.controller.admin.PermissionAdminController;
+import main.java.middleware.AuthMiddleware;
 import main.java.model.Member;
 import main.java.model.Permission;
 import main.java.model.Staff;
@@ -49,6 +50,7 @@ public class StaffAdminView {
         try {
             switch (sc.nextInt()) {
                 case 1:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.create"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -56,6 +58,7 @@ public class StaffAdminView {
                     this.addStaffView();
                     break;
                 case 2:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.update"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -63,6 +66,7 @@ public class StaffAdminView {
                     this.updateStaffView();
                     break;
                 case 3:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.delete"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -70,6 +74,7 @@ public class StaffAdminView {
                     this.deleteStaffView();
                     break;
                 case 4:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
@@ -77,6 +82,7 @@ public class StaffAdminView {
                     this.listStaffView();
                     break;
                 case 5:
+                    (new AuthMiddleware()).handle();
                     if (permissions.stream().noneMatch(p -> p.getSlug().equals("member.view"))) {
                         System.out.println("Bạn không có quyền truy cập vào chức năng này.");
                         return;
